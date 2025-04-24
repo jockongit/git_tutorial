@@ -1,0 +1,52 @@
+---
+title: "Collaborating with Git"
+author: "Jock Currie"
+date: last-modified
+date-format: "D MMMM YYYY"
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    fig-cap-location: bottom
+    fig-numbering: true
+bibliography: link2zotero.bib
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+# Getting started
+
+Your greatest collaborator ever, is usually your future self.
+Do yourself (and any other collaborators) a great service by keeping an organised and well documented project that they can navigate and understand with relative ease.
+
+
+## What is Git?
+**Tracking** and **documenting** changes to files (inputs, outputs, results, document versions, etc).
+It allows you to take a snapshot of your files at a point in time, together with a commit message, so that you can roll back to that state (or recover individual files from that state) in future.
+
+## What is GitLab/GitHub?
+An online platform that allows you to share your project with the public, or selected collaborators, and your collaborators are able to make changes that you can then 'accept' (merge) into your project.
+The updated versions or changes to the project are 'pushed' and 'pulled' from the online repository with Git commands.
+
+If you would like to version control your work on your own computer (and nothing further), then you need only Git (software) installed.
+If you would like to create an online repository (copy of your project) so that others can see it, or to be able to share your developing work with collaborators, then you will additionally need to create credentials for GitLab or GitHub (or equivalent).
+
+# Common git functions
+
+The Git interface on RStudio provides buttons for the most common Git operations, which can also be executed in a terminal.
+Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal. 
+Many advanced users revert to using the terminal only.
+
+git pull
+
+git push
+
+git commit
+
+git diff
+
+# References
+

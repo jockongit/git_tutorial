@@ -1,0 +1,49 @@
+---
+title: "Untitled"
+author: "Your Name"
+format: html
+editor: visual
+---
+
+This template needs some work and the formatting thereof will develop as the NBA comes up with a template/approach.
+
+## List of accronyms:
+
+ET Ecosystem Types\
+MEM Marine Ecosystem Map
+
+## Summary
+
+A paragraph (or more) that summarises the setting, aim and objective of the information presented.
+
+## Section 1
+
+Further information on details. Introduction or methods.
+
+## Section 2
+
+Perhaps some results and graphs included
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+
+1 + 1
+
+```
+
+You can add options to executable code like this
+
+```{r}
+
+#| echo: false
+
+2 * 2
+
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
