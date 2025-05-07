@@ -1,6 +1,6 @@
 ---
 title: "Collaborating with Git"
-author: "Jock Currie"
+author: "Jock Currie, Natasha Besseling"
 date: last-modified
 date-format: "D MMMM YYYY"
 format: 
@@ -17,36 +17,148 @@ execute:
   error: false
 ---
 
-# Getting started
+# Getting organised
 
-Your greatest collaborator ever, is usually your future self.
-Do yourself (and any other collaborators) a great service by keeping an organised and well documented project that they can navigate and understand with relative ease.
+Your greatest collaborator ever is likely to be your future self. Do yourself (and all other collaborators) a great service by keeping an organised and well documented project that they can navigate and understand with relative ease. The biggest impediment to collaboration is finding (and understanding) the pertinent information.
 
+There are different ways of structuring your projects to keep them organised. In our team we try to keep a fairly standardised structure as below (recognising that some projects will require unique structures):
+
+-   ***project*** (root) folder
+    -   The "home" of your stand-alone project. It should typically contain everything the project needs and all the resultant outputs, organised in meaningful folders. It also contains your README.md, .Rproj and .gitignore files (which are created automatically).\
+-   ***data*** folder
+    -   all your input data (often included via a **link**); these files generally do not get altered or over-written by your project scripts.\
+-   ***scripts*** folder
+    -   all your scripts that contribute to your workflow (the 'recipes' of your work)\
+-   ***outputs*** folder
+    -   any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like, although we generally don't bother.\
+-   ***plots*** folder
+    -   any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)
+
+Therefore, anything written (saved) by the scripts is written to "outputs/..." or to "plots/...", not into the root directory as that might get crowded and chaotic otherwise. See our [project_template](https://gitlab.com/jockongl/r_project_template) if interested.
+
+## How do we avoid many duplicated input files across different projects?
+
+The answer is with the use of symbolic links (or directory junctions), which you create inside your project *data* directory and which point to a folder that is stored elsewhere on your computer and contains the input data relevant to the project.
+
+In the Windows Command Prompt (cmd), use the [mklink](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/mklink) function in the following way:
+
+mklink /j “absolute_path\\to\\your\\Rproject\\data\\link2gis” “absolute_path\\to\\your\\data\\gis”
+
+to create a linked folder (first set of inverted commas) that points to your target folder (second set of inveted commas). If you repeat this approach across all your R projects, they can all point to a single directory that houses your input data somewhere else on your computer.
+
+**NB Warning:** Make sure that you add the symbolic link, e.g. *data/link2gis* in the above example (or your entire *data/* folder) to the .gitignore file! Otherwise (\*on Windows), Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.
+
+By creating the above linked folders, together with the use of the R command *list.files()* to search for and load your input files, we can have complete interoperability between different machines (or collaborators), even if they have their data stored in different places (under different folder names).
+
+```{r load_data, echo=TRUE}
+### example
+
+## load the spatial features and dplyr packages (install them if you have not yet done so)
+library(sf)
+library(dplyr)
+
+## create file paths (find the correct path, which can vary among different machines)
+mem_fl <- list.files(path = "../data", pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE) # we include '../' to go up one directory level to the root folder, because I created a 'quarto' folder and unlike other (normal .R) scripts, quarto files get rendered from the folder they are saved in. But, running it in the R console, we need to remove the '../' as the default working directory is the project root directory. this difference between the 'working directory' of quarto files and the R console or R scripts, can be avoided by using the here() function:
+# mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
+
+## load the spatial file 
+mem <- read_sf(dsn=mem_fl)
+
+## plot the pelagic ecosystem types
+# plot(st_geometry(mem), axes=T)
+mem %>% 
+  st_transform(crs = 4326) %>% 
+  select(P_EcosysType) %>% 
+  plot(axes = T, key.pos = NULL, main = "Pelagic Ecosystem Types")
+
+```
+
+The file will be found as long as it exists somewhere within the path specified. To demonstrate, rename the 'pretend_link2gis' folder name and rerun it. Obviously, for consistent results and reproducibility, the collaborators need to ensure they have precisely the same input data! See @sec-datarepo for a trick to accomplish that.
+
+# Version control
+
+Once we have our data and file structures organised, we need to try and write organised and well-documented code. To track updates to the code, snapshot specific versions (e.g. of results shared with a collaborator or used in an output), and remain organised among multiple collaborators working on the same project, we need a version control system.
 
 ## What is Git?
-**Tracking** and **documenting** changes to files (inputs, outputs, results, document versions, etc).
-It allows you to take a snapshot of your files at a point in time, together with a commit message, so that you can roll back to that state (or recover individual files from that state) in future.
+
+A solution to **track** and **document** changes to files (inputs, outputs, results, document versions, etc). It allows you to take a snapshot of your files at a point in time, together with a commit message, so that you can roll back to that previous state (or recover individual files from that state) at any future time.
+
+The (hidden) .git folder appears inside your project project folder once you have initialised Git on that project and it contains the (magic) history that tracks your committed changes over time.
 
 ## What is GitLab/GitHub?
-An online platform that allows you to share your project with the public, or selected collaborators, and your collaborators are able to make changes that you can then 'accept' (merge) into your project.
-The updated versions or changes to the project are 'pushed' and 'pulled' from the online repository with Git commands.
 
-If you would like to version control your work on your own computer (and nothing further), then you need only Git (software) installed.
-If you would like to create an online repository (copy of your project) so that others can see it, or to be able to share your developing work with collaborators, then you will additionally need to create credentials for GitLab or GitHub (or equivalent).
+An online platform that allows you to share your project with the public, or selected collaborators, and your collaborators are able to make changes that you can then 'accept' (merge) into your project. The updated versions or changes to the project are 'pushed' (from computer to online repository) and 'pulled' (from online repository to computer) with Git commands.
 
-# Common git functions
+If you would like to version control your work on your own computer (and nothing further), then you need only Git (software) installed. If you would like to create an online repository (copy of your project) so that others can see it, or to be able to share your work with collaborators, then you will additionally need to create a profile on GitLab or GitHub (or equivalent) and 'push' your project to an online repository.
 
-The Git interface on RStudio provides buttons for the most common Git operations, which can also be executed in a terminal.
-Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal. 
-Many advanced users revert to using the terminal only.
+Git will track changes in any file formats, including Word documents, spatial files, etc. However, the *git diff* function will tend to show differences in the file **content** only for text files (which includes most script files).
 
-git pull
+# Common Git functions
 
-git push
+Use cheat sheets when you're learning a new tool, e.g. [Git cheat sheet](https://education.github.com/git-cheat-sheet-education.pdf).
 
-git commit
+RStudio has integrated Git functionality and a Git interface on RStudio becomes visible once you have initialised Git version control on that project (close and reopen RStudio if it doesn't appear). The Git interface on RStudio provides buttons for the most common Git operations, which can alternatively be executed in a terminal. Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal (and many advanced users revert to using the terminal only).
 
-git diff
+Before you start using Git for the first time, you need to set your credentials within a terminal:\
+git config --global user.name \[YOUR NAME\]\
+git config --global user.email \[YOUR EMAIL\]
+
+Thereafter, you can initialise (activate) git on any project with:\
+**git init** (make sure you're in the project folder)\
+In RStudio, the same can be achieved via *Tools* \> *Project Options* \> *Git/SVN*; select Git under *Version control system*.
+
+**git commit**
+
+**git diff**
+
+**git clone \[url\]**
+
+**git pull**
+
+**git push**
+
+The most frequent sequence used most of the time is:
+
+*git pull* to ensure you have the newest version, after which you make your changes; *git add* to stage the changed files; *git commit* to commit the changes to a version and add a meaningful commit message; *git push* to push them to the remote repository;
+
+# The importance of branches
+
+Once a project has become mature (contains a substantial amount of work and is worth protecting), and especially if multiple people are collaborating on the same project, it becomes vital that we work on 'feature' branches and avoid making changes directly to the main branch. A certain feature is added (or improved) on the feature branch and only once it has been tested and reviewed (make sure it doesn't break anything!), does it get merged into the main branch. All development, exploration and testing of new methods or features happens on the feature branches and the main branch is 'protected', i.e. collaborators do not push their changes to the main branch. Instead, they will create a 'merge request' once their feature branch is complete and ready to merge into the main branch. Only the owner(s) of the project is/are responsible for completing the merge and review the changes before doing so.
+
+Once you start collaborating on projects, it becomes important to pull and push frequently. Before you start working on a new feature, pull the remote project, in case your teammates have made some changes since you last worked on it. Otherwise, you'll be adding your changes to an outdated version! 
+
+# A centralised data repository (within SANBI IT systems) {#sec-datarepo}
+
+Reproducible science requires us to apply exactly the same methods to exactly the same datasets. 
+Sharing scripted workflows goes a long way to make the methods reproducible, but the other critical aspect is ensuring that the input data are identical. 
+If we all have our own copy of input datasets on our machines, how do we ensure that they always remain the same, including when the data manager/owner adds new data or makes corrections?
+Below is a suggested approach that we are starting to implement.
+If anyone foresees problems with it, or if you have other solutions, please share!
+
+Within the *SANBI Marine Programme* Team (Microsoft Teams), we have a 'marine_data' channel, where we are curating all of our spatial layers and datasets.
+Because it includes datasets that may not be shared with others and/or have usage restrictions, it is a private (protected) channel and membership is restricted to those who need it.
+Although not critical to this demonstration, the data are grouped in thematic subfolders and a data inventory (spreadsheet) in the root folder captures the metadata and the location (folder path) of the datasets.
+This Teams channel is intended to be our centralised and authoritative data storage. 
+The advantage of using a Teams channel over a staff member's OneDrive account, is that the channel should be safe and persist irrespective of staff turnover.
+If datasets are updated or fixed, they should be updated here and tracked in the data inventory.
+
+Up until a few days ago, we had to manually download these data and/or remember to re-download the relevant folder if data were added/changed.
+However, Natasha recently figured out a system by which we can sync the Teams channel to our computers.
+This is achieved by adding a shortcut to the Teams channel to our OneDrive account, and the OneDrive account is synced to our computers. 
+
+# Notes on good data hygiene
+
+Use descriptive, standardised names for your files (and folders).\
+Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.
+
+Have your data in long table format (add data in rows, not columns).
+
+Each column should contain only one type (class) of information (either text, numeric, etc.).
+
+Always maintain effective metadata: clear, unambiguous, comprehensive
+
+Use a scripted program for analysis. Store data in non-proprietary software formats. Consider hardware formats & longevity (save data from those floppy disks!). Always store an uncorrected, original data file.
 
 # References
 
+Borer ET, Seabloom EW, Jones MB, Schildhauer M (2009) Some Simple Guidelines for Effective Data Management. The Bulletin of the Ecological Society of America 90:205–214. doi: 10.1890/0012-9623-90.2.205

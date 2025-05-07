@@ -6,8 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Jock Currie">
-<meta name="dcterms.date" content="2025-04-24">
+<meta name="author" content="Jock Currie, Natasha Besseling">
+<meta name="dcterms.date" content="2025-05-07">
 
 <title>Collaborating with Git</title>
 <style>
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -47,13 +81,20 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started"><span class="header-section-number">1</span> Getting started</a>
+  <li><a href="#getting-organised" id="toc-getting-organised" class="nav-link active" data-scroll-target="#getting-organised"><span class="header-section-number">1</span> Getting organised</a>
   <ul class="collapse">
-  <li><a href="#what-is-git" id="toc-what-is-git" class="nav-link" data-scroll-target="#what-is-git"><span class="header-section-number">1.1</span> What is Git?</a></li>
-  <li><a href="#what-is-gitlabgithub" id="toc-what-is-gitlabgithub" class="nav-link" data-scroll-target="#what-is-gitlabgithub"><span class="header-section-number">1.2</span> What is GitLab/GitHub?</a></li>
+  <li><a href="#how-do-we-avoid-many-duplicated-input-files-across-different-projects" id="toc-how-do-we-avoid-many-duplicated-input-files-across-different-projects" class="nav-link" data-scroll-target="#how-do-we-avoid-many-duplicated-input-files-across-different-projects"><span class="header-section-number">1.1</span> How do we avoid many duplicated input files across different projects?</a></li>
   </ul></li>
-  <li><a href="#common-git-functions" id="toc-common-git-functions" class="nav-link" data-scroll-target="#common-git-functions"><span class="header-section-number">2</span> Common git functions</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">3</span> References</a></li>
+  <li><a href="#version-control" id="toc-version-control" class="nav-link" data-scroll-target="#version-control"><span class="header-section-number">2</span> Version control</a>
+  <ul class="collapse">
+  <li><a href="#what-is-git" id="toc-what-is-git" class="nav-link" data-scroll-target="#what-is-git"><span class="header-section-number">2.1</span> What is Git?</a></li>
+  <li><a href="#what-is-gitlabgithub" id="toc-what-is-gitlabgithub" class="nav-link" data-scroll-target="#what-is-gitlabgithub"><span class="header-section-number">2.2</span> What is GitLab/GitHub?</a></li>
+  </ul></li>
+  <li><a href="#common-git-functions" id="toc-common-git-functions" class="nav-link" data-scroll-target="#common-git-functions"><span class="header-section-number">3</span> Common Git functions</a></li>
+  <li><a href="#the-importance-of-branches" id="toc-the-importance-of-branches" class="nav-link" data-scroll-target="#the-importance-of-branches"><span class="header-section-number">4</span> The importance of branches</a></li>
+  <li><a href="#sec-datarepo" id="toc-sec-datarepo" class="nav-link" data-scroll-target="#sec-datarepo"><span class="header-section-number">5</span> A centralised data repository (within SANBI IT systems)</a></li>
+  <li><a href="#notes-on-good-data-hygiene" id="toc-notes-on-good-data-hygiene" class="nav-link" data-scroll-target="#notes-on-good-data-hygiene"><span class="header-section-number">6</span> Notes on good data hygiene</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
   </ul>
 </nav>
 </div>
@@ -71,14 +112,14 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Jock Currie </p>
+             <p>Jock Currie, Natasha Besseling </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">24 April 2025</p>
+      <p class="date">7 May 2025</p>
     </div>
   </div>
   
@@ -90,25 +131,130 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="getting-started" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Getting started</h1>
-<p>Your greatest collaborator ever, is usually your future self. Do yourself (and any other collaborators) a great service by keeping an organised and well documented project that they can navigate and understand with relative ease.</p>
-<section id="what-is-git" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="what-is-git"><span class="header-section-number">1.1</span> What is Git?</h2>
-<p><strong>Tracking</strong> and <strong>documenting</strong> changes to files (inputs, outputs, results, document versions, etc). It allows you to take a snapshot of your files at a point in time, together with a commit message, so that you can roll back to that state (or recover individual files from that state) in future.</p>
+<section id="getting-organised" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Getting organised</h1>
+<p>Your greatest collaborator ever is likely to be your future self. Do yourself (and all other collaborators) a great service by keeping an organised and well documented project that they can navigate and understand with relative ease. The biggest impediment to collaboration is finding (and understanding) the pertinent information.</p>
+<p>There are different ways of structuring your projects to keep them organised. In our team we try to keep a fairly standardised structure as below (recognising that some projects will require unique structures):</p>
+<ul>
+<li><strong><em>project</em></strong> (root) folder
+<ul>
+<li>The “home” of your stand-alone project. It should typically contain everything the project needs and all the resultant outputs, organised in meaningful folders. It also contains your README.md, .Rproj and .gitignore files (which are created automatically).<br>
+</li>
+</ul></li>
+<li><strong><em>data</em></strong> folder
+<ul>
+<li>all your input data (often included via a <strong>link</strong>); these files generally do not get altered or over-written by your project scripts.<br>
+</li>
+</ul></li>
+<li><strong><em>scripts</em></strong> folder
+<ul>
+<li>all your scripts that contribute to your workflow (the ‘recipes’ of your work)<br>
+</li>
+</ul></li>
+<li><strong><em>outputs</em></strong> folder
+<ul>
+<li>any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like, although we generally don’t bother.<br>
+</li>
+</ul></li>
+<li><strong><em>plots</em></strong> folder
+<ul>
+<li>any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)</li>
+</ul></li>
+</ul>
+<p>Therefore, anything written (saved) by the scripts is written to “outputs/…” or to “plots/…”, not into the root directory as that might get crowded and chaotic otherwise. See our <a href="https://gitlab.com/jockongl/r_project_template">project_template</a> if interested.</p>
+<section id="how-do-we-avoid-many-duplicated-input-files-across-different-projects" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="how-do-we-avoid-many-duplicated-input-files-across-different-projects"><span class="header-section-number">1.1</span> How do we avoid many duplicated input files across different projects?</h2>
+<p>The answer is with the use of symbolic links (or directory junctions), which you create inside your <em>data</em> directory and which point to your data folder that is stored elsewhere on your computer.</p>
+<p>In the Windows Command Prompt (cmd), use the <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/mklink">mklink</a> function in the following way:</p>
+<p>mklink /j “absolute_path\to\your\Rproject\data\link2gis” “absolute_path\to\your\data\gis”</p>
+<p>to create a linked folder (first set of inverted commas) that points to your target folder (second set of inveted commas). If you repeat this approach across all your R projects, they can all point to a single directory that houses your input data somewhere else on your computer.</p>
+<p><strong>NB Warning:</strong> Make sure that you add the symbolic link, e.g.&nbsp;<em>data/link2gis</em> in the above example (or your entire <em>data/</em> folder) to the .gitignore file! Otherwise (*on Windows), Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.</p>
+<p>By creating the above linked folders, together with the use of the R command <em>list.files()</em> to search for and load your input files, we can have complete interoperability between different machines (or collaborators), even if they have their data stored in different places (and under different folder names).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">### example</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## load the spatial features and dplyr packages (install them if you have not yet done so)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## create file paths (find the correct path, which can vary among different machines)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mem_fl <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"../data"</span>, <span class="at">pattern =</span> <span class="st">"^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="co"># we include '../' to go up one directory level to the root folder, because I created a 'quarto' folder and unlike other (normal .R) scripts, quarto files get rendered from the folder they are saved in. But, running it in the R console, we need to remove the '../' as the default working directory is the project root directory. this difference between the 'working directory' of quarto files and the R console or R scripts, can be avoided by using the here() function:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># mem_fl &lt;- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## load the spatial file </span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>mem <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="at">dsn=</span>mem_fl)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## plot the pelagic ecosystem types</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(st_geometry(mem), axes=T)</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>mem <span class="sc">%&gt;%</span> </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(P_EcosysType) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">axes =</span> T, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">main =</span> <span class="st">"Pelagic Ecosystem Types"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="collaborating_with_git_files/figure-html/load_data-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The file will be found as long as it is somewhere within the path specified. To demonstrate, rename the ‘pretend_link2gis’ folder name and rerun it. Obviously, for consistent results and reproducibility, the collaborators need to ensure they have precisely the same input data! See <a href="#sec-datarepo" class="quarto-xref">Section&nbsp;5</a> for a trick to accomplish that.</p>
 </section>
-<section id="what-is-gitlabgithub" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="what-is-gitlabgithub"><span class="header-section-number">1.2</span> What is GitLab/GitHub?</h2>
-<p>An online platform that allows you to share your project with the public, or selected collaborators, and your collaborators are able to make changes that you can then ‘accept’ (merge) into your project. The updated versions or changes to the project are ‘pushed’ and ‘pulled’ from the online repository with Git commands.</p>
-<p>If you would like to version control your work on your own computer (and nothing further), then you need only Git (software) installed. If you would like to create an online repository (copy of your project) so that others can see it, or to be able to share your developing work with collaborators, then you will additionally need to create credentials for GitLab or GitHub (or equivalent).</p>
+</section>
+<section id="version-control" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Version control</h1>
+<p>Once we have our data and file structures organised, we need to try and write organised and well-documented code. To track updates to the code, snapshot specific versions (e.g.&nbsp;of results shared with a collaborator or used in an output), and remain organised among multiple collaborators working on the same project, we need a version control system.</p>
+<section id="what-is-git" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="what-is-git"><span class="header-section-number">2.1</span> What is Git?</h2>
+<p>A solution to <strong>track</strong> and <strong>document</strong> changes to files (inputs, outputs, results, document versions, etc). It allows you to take a snapshot of your files at a point in time, together with a commit message, so that you can roll back to that previous state (or recover individual files from that state) at any future time.</p>
+<p>The (hidden) .git folder appears inside your project project folder once you have initialised Git on that project and it contains the (magic) history that tracks your committed changes over time.</p>
+</section>
+<section id="what-is-gitlabgithub" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="what-is-gitlabgithub"><span class="header-section-number">2.2</span> What is GitLab/GitHub?</h2>
+<p>An online platform that allows you to share your project with the public, or selected collaborators, and your collaborators are able to make changes that you can then ‘accept’ (merge) into your project. The updated versions or changes to the project are ‘pushed’ (from computer to online repository) and ‘pulled’ (from online repository to computer) with Git commands.</p>
+<p>If you would like to version control your work on your own computer (and nothing further), then you need only Git (software) installed. If you would like to create an online repository (copy of your project) so that others can see it, or to be able to share your work with collaborators, then you will additionally need to create a profile on GitLab or GitHub (or equivalent) and ‘push’ your project to an online repository.</p>
+<p>Git will track changes in any file formats, including Word documents, spatial files, etc. However, the <em>git diff</em> function will tend to show differences in the file <strong>content</strong> only for text files (which includes most script files).</p>
 </section>
 </section>
-<section id="common-git-functions" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Common git functions</h1>
-<p>The Git interface on RStudio provides buttons for the most common Git operations, which can also be executed in a terminal. Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal. Many more advanced users revert to using the terminal only.</p>
+<section id="common-git-functions" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Common Git functions</h1>
+<p>Use cheat sheets when you’re learning a new tool, e.g.&nbsp;<a href="https://education.github.com/git-cheat-sheet-education.pdf">Git cheat sheet</a>.</p>
+<p>RStudio has integrated Git functionality and a Git interface on RStudio becomes visible once you have initialised Git version control on that project (close and reopen RStudio if it doesn’t appear). The Git interface on RStudio provides buttons for the most common Git operations, which can alternatively be executed in a terminal. Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal (and many advanced users revert to using the terminal only).</p>
+<p>Before you start using Git for the first time, you need to set your credentials within a terminal:<br>
+git config –global user.name [YOUR NAME]<br>
+git config –global user.email [YOUR EMAIL]</p>
+<p>Thereafter, you can initialise (activate) git on any project with:<br>
+<strong>git init</strong> (make sure you’re in the project folder)<br>
+In RStudio, the same can be achieved via <em>Tools</em> &gt; <em>Project Options</em> &gt; <em>Git/SVN</em>; select Git under <em>Version control system</em>.</p>
+<p><strong>git commit</strong></p>
+<p><strong>git diff</strong></p>
+<p><strong>git clone [url]</strong></p>
+<p><strong>git pull</strong></p>
+<p><strong>git push</strong></p>
+<p>The most frequent sequence used most of the time is:</p>
+<p><em>git pull</em> to ensure you have the newest version, after which you make your changes; <em>git add</em> to stage the changed files; <em>git commit</em> to commit the changes to a version and add a meaningful commit message; <em>git push</em> to push them to the remote repository;</p>
 </section>
-<section id="references" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> References</h1>
+<section id="the-importance-of-branches" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> The importance of branches</h1>
+<p>Once a project has become mature (contains a substantial amount of work and is worth protecting), and especially if multiple people are collaborating on the same project, it becomes vital that we work on ‘feature’ branches and avoid making changes directly to the main branch. A certain feature is added (or improved) on the feature branch and only once it has been tested and reviewed (make sure it doesn’t break anything!), does it get merged into the main branch. All development, exploration and testing of new methods or features happens on the feature branches and the main branch is ‘protected’, i.e.&nbsp;collaborators do not push their changes to the main branch. Instead, they will create a ‘merge request’ once their feature branch is complete and ready to merge into the main branch. Only the owner(s) of the project is/are responsible for completing the merge and review the changes before doing so.</p>
+<p>Once you start collaborating on projects, it becomes important to pull and push frequently. Before you start working on a new feature, pull the remote project, in case your teammates have made some changes since you last worked on it. Otherwise, you’ll be adding your changes to an outdated version!</p>
+</section>
+<section id="sec-datarepo" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> A centralised data repository (within SANBI IT systems)</h1>
+<p>Reproducible science requires us to apply exactly the same methods to exactly the same datasets. Sharing scripted workflows goes a long way to make the methods reproducible, but the other critical aspect is ensuring that the input data are identical. If we all have our own copy of input datasets on our machines, how do we ensure that they always remain the same, including when the data manager/owner adds new data or makes corrections? Here is a suggested approach recently figured out by Natasha:</p>
+</section>
+<section id="notes-on-good-data-hygiene" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Notes on good data hygiene</h1>
+<p>Use descriptive, standardised names for your files (and folders).<br>
+Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.</p>
+<p>Have your data in long table format (add data in rows, not columns).</p>
+<p>Each column should contain only one type (class) of information (either text, numeric, etc.).</p>
+<p>Always maintain effective metadata: clear, unambiguous, comprehensive</p>
+<p>Use a scripted program for analysis. Store data in non-proprietary software formats. Consider hardware formats &amp; longevity (save data from those floppy disks!). Always store an uncorrected, original data file.</p>
+</section>
+<section id="references" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> References</h1>
+<p>Borer ET, Seabloom EW, Jones MB, Schildhauer M (2009) Some Simple Guidelines for Effective Data Management. The Bulletin of the Ecological Society of America 90:205–214. doi: 10.1890/0012-9623-90.2.205</p>
 </section>
 
 </main>
