@@ -7,6 +7,10 @@ The content is very much limited to the basics of that context and there are man
 It is also peppered with a few recommendations for keeping your workflows organised and conducive to collaboration and easing the path towards reproducible science.
 Many of those suggestions are personal preferences that might be achieved in other ways.
 
+## Status
+
+This work is in development and much of the detail has not yet been added.
+
 ## Getting started
 
 To clone this repository,
@@ -19,4 +23,4 @@ Once cloned, you can open the html files or the Quarto (*.qmd*) source files, bo
 
 ## Acknowledgments
 
-Much of the content is reproduced from teaching materials provided by [Fathom Data](https://www.fathomdata.dev/) and online resources, which I have tried to link to or acknowledge in the docu
+Much of the Git content is reproduced from teaching materials provided by [Fathom Data](https://www.fathomdata.dev/) and online resources, which I will try to link to or acknowledge in the document.
