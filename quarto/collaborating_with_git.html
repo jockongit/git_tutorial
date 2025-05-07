@@ -83,17 +83,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#getting-organised" id="toc-getting-organised" class="nav-link active" data-scroll-target="#getting-organised"><span class="header-section-number">1</span> Getting organised</a>
   <ul class="collapse">
-  <li><a href="#how-do-we-avoid-many-duplicated-input-files-across-different-projects" id="toc-how-do-we-avoid-many-duplicated-input-files-across-different-projects" class="nav-link" data-scroll-target="#how-do-we-avoid-many-duplicated-input-files-across-different-projects"><span class="header-section-number">1.1</span> How do we avoid many duplicated input files across different projects?</a></li>
+  <li><a href="#sec-avoidDupl" id="toc-sec-avoidDupl" class="nav-link" data-scroll-target="#sec-avoidDupl"><span class="header-section-number">1.1</span> How do we avoid many duplicated input files across different projects?</a></li>
   </ul></li>
   <li><a href="#version-control" id="toc-version-control" class="nav-link" data-scroll-target="#version-control"><span class="header-section-number">2</span> Version control</a>
   <ul class="collapse">
   <li><a href="#what-is-git" id="toc-what-is-git" class="nav-link" data-scroll-target="#what-is-git"><span class="header-section-number">2.1</span> What is Git?</a></li>
   <li><a href="#what-is-gitlabgithub" id="toc-what-is-gitlabgithub" class="nav-link" data-scroll-target="#what-is-gitlabgithub"><span class="header-section-number">2.2</span> What is GitLab/GitHub?</a></li>
   </ul></li>
-  <li><a href="#common-git-functions" id="toc-common-git-functions" class="nav-link" data-scroll-target="#common-git-functions"><span class="header-section-number">3</span> Common Git functions</a></li>
+  <li><a href="#common-git-functions" id="toc-common-git-functions" class="nav-link" data-scroll-target="#common-git-functions"><span class="header-section-number">3</span> Common Git functions</a>
+  <ul class="collapse">
+  <li><a href="#the-importance-of-.gitignore" id="toc-the-importance-of-.gitignore" class="nav-link" data-scroll-target="#the-importance-of-.gitignore"><span class="header-section-number">3.1</span> The importance of <em>.gitignore</em></a></li>
+  <li><a href="#sec-renviron" id="toc-sec-renviron" class="nav-link" data-scroll-target="#sec-renviron"><span class="header-section-number">3.2</span> The <em>.Renviron</em> file</a></li>
+  <li><a href="#things-to-watch-out-for" id="toc-things-to-watch-out-for" class="nav-link" data-scroll-target="#things-to-watch-out-for"><span class="header-section-number">3.3</span> Things to watch out for</a></li>
+  </ul></li>
   <li><a href="#the-importance-of-branches" id="toc-the-importance-of-branches" class="nav-link" data-scroll-target="#the-importance-of-branches"><span class="header-section-number">4</span> The importance of branches</a></li>
   <li><a href="#sec-datarepo" id="toc-sec-datarepo" class="nav-link" data-scroll-target="#sec-datarepo"><span class="header-section-number">5</span> A centralised data repository (within SANBI IT systems)</a></li>
-  <li><a href="#notes-on-good-data-hygiene" id="toc-notes-on-good-data-hygiene" class="nav-link" data-scroll-target="#notes-on-good-data-hygiene"><span class="header-section-number">6</span> Notes on good data hygiene</a></li>
+  <li><a href="#general-notes-on-good-data-hygiene-see-borer-et-al.-2009" id="toc-general-notes-on-good-data-hygiene-see-borer-et-al.-2009" class="nav-link" data-scroll-target="#general-notes-on-good-data-hygiene-see-borer-et-al.-2009"><span class="header-section-number">6</span> General notes on good data hygiene (See Borer et al.&nbsp;2009)</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
   </ul>
 </nav>
@@ -138,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><strong><em>project</em></strong> (root) folder
 <ul>
-<li>The “home” of your stand-alone project. It should typically contain everything the project needs and all the resultant outputs, organised in meaningful folders. It also contains your README.md, .Rproj and .gitignore files (which are created automatically).<br>
+<li>The “home” of your stand-alone project. It should typically contain everything the project needs and all the resultant outputs, organised in meaningful folders. It also contains your <em>README.md</em>, <em>.Rproj</em> and <em>.gitignore</em> files (which are created automatically).<br>
 </li>
 </ul></li>
 <li><strong><em>data</em></strong> folder
@@ -161,15 +166,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)</li>
 </ul></li>
 </ul>
-<p>Therefore, anything written (saved) by the scripts is written to “outputs/…” or to “plots/…”, not into the root directory as that might get crowded and chaotic otherwise. See our <a href="https://gitlab.com/jockongl/r_project_template">project_template</a> if interested.</p>
-<section id="how-do-we-avoid-many-duplicated-input-files-across-different-projects" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="how-do-we-avoid-many-duplicated-input-files-across-different-projects"><span class="header-section-number">1.1</span> How do we avoid many duplicated input files across different projects?</h2>
-<p>The answer is with the use of symbolic links (or directory junctions), which you create inside your <em>data</em> directory and which point to your data folder that is stored elsewhere on your computer.</p>
+<p>Therefore, anything written (saved) by the scripts is written to “outputs/…” or to “plots/…”, not into the root directory as that might get crowded and chaotic otherwise. We also want to (generally) avoid writing any changes to the input files, so we tend to not write to the <em>data</em> directory. See our <a href="https://gitlab.com/jockongl/r_project_template">project_template</a> if interested.</p>
+<section id="sec-avoidDupl" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-avoidDupl"><span class="header-section-number">1.1</span> How do we avoid many duplicated input files across different projects?</h2>
+<p>One solution is the use of symbolic links (or directory junctions), which you create inside your project <em>data</em> directory and which point to a folder that is stored elsewhere on your computer and contains the input data relevant to the project.</p>
 <p>In the Windows Command Prompt (cmd), use the <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/mklink">mklink</a> function in the following way:</p>
 <p>mklink /j “absolute_path\to\your\Rproject\data\link2gis” “absolute_path\to\your\data\gis”</p>
 <p>to create a linked folder (first set of inverted commas) that points to your target folder (second set of inveted commas). If you repeat this approach across all your R projects, they can all point to a single directory that houses your input data somewhere else on your computer.</p>
-<p><strong>NB Warning:</strong> Make sure that you add the symbolic link, e.g.&nbsp;<em>data/link2gis</em> in the above example (or your entire <em>data/</em> folder) to the .gitignore file! Otherwise (*on Windows), Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.</p>
-<p>By creating the above linked folders, together with the use of the R command <em>list.files()</em> to search for and load your input files, we can have complete interoperability between different machines (or collaborators), even if they have their data stored in different places (and under different folder names).</p>
+<p><strong>NB Warning:</strong> Make sure that you add the symbolic link, e.g.&nbsp;<em>data/link2gis</em> in the above example (or your entire <em>data/</em> folder) to the <em>.gitignore</em> file! Otherwise (*on Windows), Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.</p>
+<p>By creating the above linked folders, together with the use of the R command <em>list.files()</em> to search for and load your input files, we can have complete interoperability between different machines (or collaborators), even if they have their data stored in different places (under different folder names).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">### example</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -198,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The file will be found as long as it is somewhere within the path specified. To demonstrate, rename the ‘pretend_link2gis’ folder name and rerun it. Obviously, for consistent results and reproducibility, the collaborators need to ensure they have precisely the same input data! See <a href="#sec-datarepo" class="quarto-xref">Section&nbsp;5</a> for a trick to accomplish that.</p>
+<p>The file will be found as long as it exists somewhere within the path specified. To demonstrate, rename the ‘pretend_link2gis’ folder name and rerun it. Obviously, for consistent results and reproducibility, the collaborators need to ensure they have precisely the same input data! See <a href="#sec-datarepo" class="quarto-xref">Section&nbsp;5</a> for a trick to accomplish that.</p>
 </section>
 </section>
 <section id="version-control" class="level1" data-number="2">
@@ -233,20 +238,79 @@ In RStudio, the same can be achieved via <em>Tools</em> &gt; <em>Project Options
 <p><strong>git push</strong></p>
 <p>The most frequent sequence used most of the time is:</p>
 <p><em>git pull</em> to ensure you have the newest version, after which you make your changes; <em>git add</em> to stage the changed files; <em>git commit</em> to commit the changes to a version and add a meaningful commit message; <em>git push</em> to push them to the remote repository;</p>
+<section id="the-importance-of-.gitignore" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="the-importance-of-.gitignore"><span class="header-section-number">3.1</span> The importance of <em>.gitignore</em></h2>
+<p>The <em>.gitignore</em> file is a text file that lists which files (or directories) should not be tracked by Git. In other words, those files/directories listed will not appear at all in the Git repository and any changes to them will not be tracked.</p>
+<p>This is useful for many different contexts, e.g.:</p>
+<ul>
+<li>sensitive input or output files you do not want shared with those accessing your project;<br>
+</li>
+<li>your secret credentials saved in the <em>.Renviron</em> file (see <a href="#sec-renviron" class="quarto-xref">Section&nbsp;3.2</a>);<br>
+</li>
+<li>large files that will cause you to exceed file size or repository size limits;</li>
+<li>temporary files or other files that change frequently but have no bearing on project contents;</li>
+</ul>
+</section>
+<section id="sec-renviron" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="sec-renviron"><span class="header-section-number">3.2</span> The <em>.Renviron</em> file</h2>
+<p>Any login credentials (e.g.&nbsp;username and password to access your databases) or other sensitive information that you want accessible to your R session, but which you do not want to share with collaborators (or the public if your project is public), you should add to a special file named <em>.Renviron</em>. This text file is treated in a special way, in that objects defined in it are automatically loaded into your R environment when you open your project in RStudio. If you want the same credentials accessible across all your R projects, you can save such information in an <em>.Renviron</em> file in your <em>HOME</em> directory. If you want different credentials accessible to different projects, you can instead create a project-specific <em>.Renviron</em> file in your project root directory. Remember, if you make changes in your .Renviron file, you need to restart R to load those changes.</p>
+<p><strong>Very important:</strong> Make a habit of adding ‘.Renviron’ to your <em>.gitignore</em> file, so that the sensitive information you have put there is not pushed to your online repository!</p>
+</section>
+<section id="things-to-watch-out-for" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="things-to-watch-out-for"><span class="header-section-number">3.3</span> Things to watch out for</h2>
+<p>Always review and be certain about what is included or not included in <em>.gitignore</em>. We need to be careful to not share (push) sensitive data or credentials - e.g.&nbsp;it would be a horrible mistake to push your collaborator’s highly sensitive data to a public Git repository!</p>
+<p>Large file size limits and overall repository size limits need to be taken into consideration. For example, if you create (or include) a file &gt; 100 MB in your project, you’ll be able to commit it on Git on your local machine, but when you try to push that commit to GitLab, it will be rejected (and can get complicated quickly).</p>
+</section>
 </section>
 <section id="the-importance-of-branches" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> The importance of branches</h1>
-<p>Once a project has become mature (contains a substantial amount of work and is worth protecting), and especially if multiple people are collaborating on the same project, it becomes vital that we work on ‘feature’ branches and avoid making changes directly to the main branch. A certain feature is added (or improved) on the feature branch and only once it has been tested and reviewed (make sure it doesn’t break anything!), does it get merged into the main branch. All development, exploration and testing of new methods or features happens on the feature branches and the main branch is ‘protected’, i.e.&nbsp;collaborators do not push their changes to the main branch. Instead, they will create a ‘merge request’ once their feature branch is complete and ready to merge into the main branch. Only the owner(s) of the project is/are responsible for completing the merge and review the changes before doing so.</p>
-<p>Once you start collaborating on projects, it becomes important to pull and push frequently. Before you start working on a new feature, pull the remote project, in case your teammates have made some changes since you last worked on it. Otherwise, you’ll be adding your changes to an outdated version!</p>
+<p>Once a project has become mature (contains a substantial amount of work and is worth protecting), and especially if multiple people are collaborating on the same project, it becomes vital that further development moves to ‘feature’ branches and collaborators avoid making changes directly to the main branch. A certain feature is added (or improved) on the feature branch and only once it has been tested and reviewed (make sure it doesn’t break anything!), does it get merged into the main branch. All development, exploration and testing of new methods or features happens on the feature branches and the main branch is ‘protected’. Once their improvement/feature is complete and working as they intended, that collaborator opens a ‘merge request’. Usually the owner(s) of the project are responsible for reviewing the changes and deciding whether they approve the merge or not.</p>
+<p>Once you start collaborating on projects, it becomes especially important to pull and push frequently. Before you start working on a new feature, pull the remote project, in case your teammates have made some changes since you last worked on it. Otherwise, you’ll be adding your changes to an outdated version!</p>
 </section>
 <section id="sec-datarepo" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> A centralised data repository (within SANBI IT systems)</h1>
-<p>Reproducible science requires us to apply exactly the same methods to exactly the same datasets. Sharing scripted workflows goes a long way to make the methods reproducible, but the other critical aspect is ensuring that the input data are identical. If we all have our own copy of input datasets on our machines, how do we ensure that they always remain the same, including when the data manager/owner adds new data or makes corrections? Here is a suggested approach recently figured out by Natasha:</p>
+<p>Reproducible science requires us to apply exactly the same methods to exactly the same datasets. Sharing scripted workflows goes a long way to make the methods reproducible, but the other critical aspect is ensuring that the input data are identical. If we all have our own copy of input datasets on our machines, how do we ensure that they always remain the same, including when the data manager/owner adds new data or makes corrections? Below is a suggested approach that we are starting to implement. If anyone foresees problems with it, or if you have other solutions, please share!</p>
+<p>Within the <em>SANBI Marine Programme</em> Team (Microsoft Teams), we have a ‘marine_data’ channel, where we are curating all of our spatial layers and datasets. Because it includes datasets that may not be shared with others and/or have usage restrictions, it is a private (protected) channel and membership is restricted to those who need it. Although not critical to this demonstration, the data are grouped in thematic subfolders and a data inventory (spreadsheet) in the root folder captures the metadata and the location (folder path) of the datasets. This Teams channel is intended to be our centralised and authoritative data storage. The advantage of using a Teams channel over a staff member’s OneDrive account, is that the channel should be safe and persist irrespective of staff turnover. If datasets are updated or fixed, they should be updated here and tracked in the data inventory.</p>
+<p>Up until a few days ago, we had to manually download these data and/or remember to re-download the relevant folder if data were added/changed. However, Natasha recently figured out a system by which we can sync the Teams channel to our computers. This is achieved by adding a shortcut to the Teams channel to our OneDrive account, and the OneDrive account is synced to our computers.</p>
+<p>Lets try this:</p>
+<ol type="1">
+<li><p>Navigate to your MS Teams and to the nba_data channel within the NBA_data team.</p></li>
+<li><p>Click on ‘Add shortcut to OneDrive’ in the options near the top (center) of the screen.</p></li>
+<li><p>If it is not already, set up your computer to <a href="https://support.microsoft.com/en-us/office/sync-files-with-onedrive-in-windows-615391c4-2bd3-4aae-a42a-858262e42a49">sync your OneDrive account</a> (or certain parts of it), including the newly added *nba_data* folder.</p></li>
+</ol>
+<p>Now you have a synced version of the Teams data folder on your computers and multiple people can access the same dataset. Any updates or changes made to that dataset on Teams will sync through to everyone’s OneDrive and their computer (when they access that file next).</p>
+<p>Lets try the same exercise as above in <a href="#sec-avoidDupl" class="quarto-xref">Section&nbsp;1.1</a>, but this time modify the R code to link from your project data drive to the nba_data folder we just added to OneDrive:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## load the spatial features and dplyr packages (install them if you have not yet done so)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">## create file paths (find the correct path, which can vary among different machines)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>mem_fl <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"../data"</span>, <span class="at">pattern =</span> <span class="st">"^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="co"># we include '../' to go up one directory level to the root folder, because I created a 'quarto' folder and unlike other (normal .R) scripts, quarto files get rendered from the folder they are saved in. But, running it in the R console, we need to remove the '../' as the default working directory is the project root directory. this difference between the 'working directory' of quarto files and the R console or R scripts, can be avoided by using the here() function:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mem_fl &lt;- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## load the spatial file </span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>mem <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="at">dsn=</span>mem_fl)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## plot the pelagic ecosystem types</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(st_geometry(mem), axes=T)</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>mem <span class="sc">%&gt;%</span> </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(P_EcosysType) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">axes =</span> T, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">main =</span> <span class="st">"Pelagic Ecosystem Types"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="collaborating_with_git_files/figure-html/load_nba_data-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="notes-on-good-data-hygiene" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Notes on good data hygiene</h1>
-<p>Use descriptive, standardised names for your files (and folders).<br>
-Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.</p>
+<section id="general-notes-on-good-data-hygiene-see-borer-et-al.-2009" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> General notes on good data hygiene (See Borer et al.&nbsp;2009)</h1>
+<p>Use descriptive, standardised names for your files (and folders).</p>
+<p>Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.</p>
 <p>Have your data in long table format (add data in rows, not columns).</p>
 <p>Each column should contain only one type (class) of information (either text, numeric, etc.).</p>
 <p>Always maintain effective metadata: clear, unambiguous, comprehensive</p>
