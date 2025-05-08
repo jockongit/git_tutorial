@@ -172,11 +172,19 @@ If you manage that, you have a synced version of the Teams data folder on your c
 Any updates or changes made to that dataset on Teams will sync through to everyone's OneDrive and their computer (when they access that file next).
 
 Lets try the same exercise as above in @sec-avoidDupl, but this time create a symbolic link from your project data drive to the nba_data folder we just added to OneDrive.
-For me, this was as follows:
+For me, this was typing the following into Windows Command Prompt:
 
-mklink /j “absolute_path\to\your\Rproject\data\link2gis” “absolute_path\to\your\data\gis”
+mklink /j "C:\Users\J.Currie\Documents\Rprojects\git_tutorial\data\link2nba_data" "C:\Users\J.Currie\OneDrive\OneDrive - sanbi.org.za\shortcut_to_nba_data"
 
+So, now we can all access the same nba_data datasets with our R projects. 
 
+**But, beware:** 
+
+1.  Never write to your data (input folder)! This rule becomes absolutely critical if we are all sharing access to a central authoritative data repository. They are 'our' data, not your personal copy! Do not make changes to them unless you are the authority or have explicit permission or instruction to do so. (Having read-only access would be ideal if we can configure that)
+
+2.  Unless it is appropriate to push the data to the online repository with your project (and the data folder does not violate your online repo size limits), you may likely want to add the linked folder ('link2nba_data' in the above example) to your .gitignore file. I already did this for this tutorial, because I wanted you to add those data as a linked folder via your OneDrive account and not receive them when you cloned the online repo.
+
+Lets load some of the data and play with them:
 
 ```{r load_nba_data, echo=TRUE}
 
@@ -185,8 +193,9 @@ library(sf)
 library(dplyr)
 
 ## create file paths (find the correct path, which can vary among different machines)
-mem_fl <- list.files(path = "../data", pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE) # we include '../' to go up one directory level to the root folder, because I created a 'quarto' folder and unlike other (normal .R) scripts, quarto files get rendered from the folder they are saved in. But, running it in the R console, we need to remove the '../' as the default working directory is the project root directory. this difference between the 'working directory' of quarto files and the R console or R scripts, can be avoided by using the here() function:
-# mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
+mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
+threat_fl <- list.files(path = here::here("data"), pattern = "^nba_example_thr_data.csv$", recursive = TRUE, full.names = TRUE)
+
 
 ## load the spatial file 
 mem <- read_sf(dsn=mem_fl)
