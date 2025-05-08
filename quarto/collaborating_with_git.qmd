@@ -102,8 +102,8 @@ Use cheat sheets when you're learning a new tool, e.g. [Git cheat sheet](https:/
 RStudio has integrated Git functionality and a Git interface on RStudio becomes visible once you have initialised Git version control on that project (close and reopen RStudio if it doesn't appear). The Git interface on RStudio provides buttons for the most common Git operations, which can alternatively be executed in a terminal. Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal (and many advanced users revert to using the terminal only).
 
 Before you start using Git for the first time, you need to set your credentials within a terminal:\
-git config --global user.name \[YOUR NAME\]\
-git config --global user.email \[YOUR EMAIL\]
+git config \--global user.name \[YOUR NAME\]\
+git config \--global user.email \[YOUR EMAIL\]
 
 Thereafter, you can initialise (activate) git on any project with:\
 **git init** (make sure you're in the project folder)\
@@ -174,7 +174,7 @@ Any updates or changes made to that dataset on Teams will sync through to everyo
 Lets try the same exercise as above in @sec-avoidDupl, but this time create a symbolic link from your project data drive to the nba_data folder we just added to OneDrive.
 For me, this was typing the following into Windows Command Prompt:
 
-mklink /j "C:\Users\J.Currie\Documents\Rprojects\git_tutorial\data\link2nba_data" "C:\Users\J.Currie\OneDrive\OneDrive - sanbi.org.za\shortcut_to_nba_data"
+mklink /j "C:\\Users\\J.Currie\\Documents\\Rprojects\\git_tutorial\\data\\link2nba_data" "C:\\Users\\J.Currie\\OneDrive\\OneDrive - sanbi.org.za\\shortcut_to_nba_data"
 
 So, now we can all access the same nba_data datasets with our R projects. 
 
@@ -207,23 +207,11 @@ bar_plot <- NBA_plot(NBA_example_thr_data,
 
 bar_plot
 
-# 
-# 
-# ## load the spatial file 
-# mem <- read_sf(dsn=mem_fl)
-# 
-# ## plot the pelagic ecosystem types
-# # plot(st_geometry(mem), axes=T)
-# mem %>% 
-#   st_transform(crs = 4326) %>% 
-#   select(P_EcosysType) %>% 
-#   plot(axes = T, key.pos = NULL, main = "Pelagic Ecosystem Types")
-
 ```
 
 # General notes on good data hygiene (See Borer et al. 2009)
 
-Use descriptive, standardised names for your files (and folders).
+Use descriptive, standardised names for your files and folder names. Avoid spaces - use underscores instead.
 
 Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.
 

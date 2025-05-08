@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jock Currie, Natasha Besseling">
-<meta name="dcterms.date" content="2025-05-07">
+<meta name="dcterms.date" content="2025-05-08">
 
 <title>Collaborating with Git</title>
 <style>
@@ -124,7 +124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">7 May 2025</p>
+      <p class="date">8 May 2025</p>
     </div>
   </div>
   
@@ -172,7 +172,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>One solution is the use of symbolic links (or directory junctions), which you create inside your project <em>data</em> directory and which point to a folder that is stored elsewhere on your computer and contains the input data relevant to the project.</p>
 <p>In the Windows Command Prompt (cmd), use the <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/mklink">mklink</a> function in the following way:</p>
 <p>mklink /j “absolute_path\to\your\Rproject\data\link2gis” “absolute_path\to\your\data\gis”</p>
-<p>to create a linked folder (first set of inverted commas) that points to your target folder (second set of inveted commas). If you repeat this approach across all your R projects, they can all point to a single directory that houses your input data somewhere else on your computer.</p>
+<p>to create a linked folder (first set of inverted commas) that points to your target folder (second set of inveted commas). Hint: copy the absolute paths from your Windows Explorer. If you repeat this approach across all your R projects, they can all point to a single directory that houses your input data somewhere else on your computer.</p>
 <p><strong>NB Warning:</strong> Make sure that you add the symbolic link, e.g.&nbsp;<em>data/link2gis</em> in the above example (or your entire <em>data/</em> folder) to the <em>.gitignore</em> file! Otherwise (*on Windows), Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.</p>
 <p>By creating the above linked folders, together with the use of the R command <em>list.files()</em> to search for and load your input files, we can have complete interoperability between different machines (or collaborators), even if they have their data stored in different places (under different folder names).</p>
 <div class="cell">
@@ -226,8 +226,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Use cheat sheets when you’re learning a new tool, e.g.&nbsp;<a href="https://education.github.com/git-cheat-sheet-education.pdf">Git cheat sheet</a>.</p>
 <p>RStudio has integrated Git functionality and a Git interface on RStudio becomes visible once you have initialised Git version control on that project (close and reopen RStudio if it doesn’t appear). The Git interface on RStudio provides buttons for the most common Git operations, which can alternatively be executed in a terminal. Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal (and many advanced users revert to using the terminal only).</p>
 <p>Before you start using Git for the first time, you need to set your credentials within a terminal:<br>
-git config –global user.name [YOUR NAME]<br>
-git config –global user.email [YOUR EMAIL]</p>
+git config --global user.name [YOUR NAME]<br>
+git config --global user.email [YOUR EMAIL]</p>
 <p>Thereafter, you can initialise (activate) git on any project with:<br>
 <strong>git init</strong> (make sure you’re in the project folder)<br>
 In RStudio, the same can be achieved via <em>Tools</em> &gt; <em>Project Options</em> &gt; <em>Git/SVN</em>; select Git under <em>Version control system</em>.</p>
@@ -276,28 +276,37 @@ In RStudio, the same can be achieved via <em>Tools</em> &gt; <em>Project Options
 <ol type="1">
 <li><p>Navigate to your MS Teams and to the nba_data channel within the NBA_data team.</p></li>
 <li><p>Click on ‘Add shortcut to OneDrive’ in the options near the top (center) of the screen.</p></li>
-<li><p>If it is not already, set up your computer to <a href="https://support.microsoft.com/en-us/office/sync-files-with-onedrive-in-windows-615391c4-2bd3-4aae-a42a-858262e42a49">sync your OneDrive account</a> (or certain parts of it), including the newly added *nba_data* folder.</p></li>
+<li><p>If it is not already, set up your computer to <a href="https://support.microsoft.com/en-us/office/sync-files-with-onedrive-in-windows-615391c4-2bd3-4aae-a42a-858262e42a49">sync your OneDrive account</a> (or certain parts of it), including the newly added <em>nba_data</em> folder.</p></li>
 </ol>
-<p>Now you have a synced version of the Teams data folder on your computers and multiple people can access the same dataset. Any updates or changes made to that dataset on Teams will sync through to everyone’s OneDrive and their computer (when they access that file next).</p>
-<p>Lets try the same exercise as above in <a href="#sec-avoidDupl" class="quarto-xref">Section&nbsp;1.1</a>, but this time modify the R code to link from your project data drive to the nba_data folder we just added to OneDrive:</p>
+<p>If you manage that, you have a synced version of the Teams data folder on your computers and multiple people can access the same dataset. Any updates or changes made to that dataset on Teams will sync through to everyone’s OneDrive and their computer (when they access that file next).</p>
+<p>Lets try the same exercise as above in <a href="#sec-avoidDupl" class="quarto-xref">Section&nbsp;1.1</a>, but this time create a symbolic link from your project data drive to the nba_data folder we just added to OneDrive. For me, this was typing the following into Windows Command Prompt:</p>
+<p>mklink /j “C:\Users\J.Currie\Documents\Rprojects\git_tutorial\data\link2nba_data” “C:\Users\J.Currie\OneDrive\OneDrive - sanbi.org.za\shortcut_to_nba_data”</p>
+<p>So, now we can all access the same nba_data datasets with our R projects.</p>
+<p><strong>But, beware:</strong></p>
+<ol type="1">
+<li><p>Never write to your data (input folder)! This rule becomes absolutely critical if we are all sharing access to a central authoritative data repository. These data are not your personal copy! Do not make changes to them unless you are the authority/owner/data manager or have explicit permission or instruction to do so. (Having read-only access would be ideal if we can configure that)</p></li>
+<li><p>Unless it is appropriate to push the data to the online repository with your project (and the data folder does not violate your online repo size limits), you may likely want to add the linked folder (‘link2nba_data’ in the above example) to your .gitignore file. I already did this for this tutorial, because I wanted you to add those data as a linked folder via your OneDrive account and not receive them when you cloned the online repo.</p></li>
+</ol>
+<p>Lets load some of the data and play with them:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## load the spatial features and dplyr packages (install them if you have not yet done so)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">## create file paths (find the correct path, which can vary among different machines)</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>mem_fl <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"../data"</span>, <span class="at">pattern =</span> <span class="st">"^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="co"># we include '../' to go up one directory level to the root folder, because I created a 'quarto' folder and unlike other (normal .R) scripts, quarto files get rendered from the folder they are saved in. But, running it in the R console, we need to remove the '../' as the default working directory is the project root directory. this difference between the 'working directory' of quarto files and the R console or R scripts, can be avoided by using the here() function:</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mem_fl &lt;- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## load the spatial file </span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>mem <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="at">dsn=</span>mem_fl)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## plot the pelagic ecosystem types</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(st_geometry(mem), axes=T)</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>mem <span class="sc">%&gt;%</span> </span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(P_EcosysType) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">axes =</span> T, <span class="at">key.pos =</span> <span class="cn">NULL</span>, <span class="at">main =</span> <span class="st">"Pelagic Ecosystem Types"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(NBA.package)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## create file paths (find the correct path, which can vary among different machines)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>mem_fl <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>), <span class="at">pattern =</span> <span class="st">"^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>threat_fl <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>), <span class="at">pattern =</span> <span class="st">"^nba_example_thr_data.csv$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>bar_plot <span class="ot">&lt;-</span> <span class="fu">NBA_plot</span>(NBA_example_thr_data,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                  <span class="st">`</span><span class="at">OVERALL types</span><span class="st">`</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">CHRT =</span> <span class="st">"bar"</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                 <span class="at">NUM =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                 <span class="at">LAB =</span> <span class="st">"Percentage of ecosystem types"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">SAVE =</span> <span class="cn">NULL</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>bar_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -309,7 +318,7 @@ In RStudio, the same can be achieved via <em>Tools</em> &gt; <em>Project Options
 </section>
 <section id="general-notes-on-good-data-hygiene-see-borer-et-al.-2009" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> General notes on good data hygiene (See Borer et al.&nbsp;2009)</h1>
-<p>Use descriptive, standardised names for your files (and folders).</p>
+<p>Use descriptive, standardised names for your files and folder names. Avoid spaces - use underscores instead.</p>
 <p>Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.</p>
 <p>Have your data in long table format (add data in rows, not columns).</p>
 <p>Each column should contain only one type (class) of information (either text, numeric, etc.).</p>
