@@ -180,7 +180,7 @@ So, now we can all access the same nba_data datasets with our R projects.
 
 **But, beware:** 
 
-1.  Never write to your data (input folder)! This rule becomes absolutely critical if we are all sharing access to a central authoritative data repository. They are 'our' data, not your personal copy! Do not make changes to them unless you are the authority or have explicit permission or instruction to do so. (Having read-only access would be ideal if we can configure that)
+1.  Never write to your data (input folder)! This rule becomes absolutely critical if we are all sharing access to a central authoritative data repository. These data are not your personal copy! Do not make changes to them unless you are the authority/owner/data manager or have explicit permission or instruction to do so. (Having read-only access would be ideal if we can configure that)
 
 2.  Unless it is appropriate to push the data to the online repository with your project (and the data folder does not violate your online repo size limits), you may likely want to add the linked folder ('link2nba_data' in the above example) to your .gitignore file. I already did this for this tutorial, because I wanted you to add those data as a linked folder via your OneDrive account and not receive them when you cloned the online repo.
 
@@ -191,21 +191,33 @@ Lets load some of the data and play with them:
 ## load the spatial features and dplyr packages (install them if you have not yet done so)
 library(sf)
 library(dplyr)
+library(NBA.package)
 
 ## create file paths (find the correct path, which can vary among different machines)
 mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
 threat_fl <- list.files(path = here::here("data"), pattern = "^nba_example_thr_data.csv$", recursive = TRUE, full.names = TRUE)
 
+bar_plot <- NBA_plot(NBA_example_thr_data,
+                  `OVERALL types`,
+                  2:5,
+                 CHRT = "bar",
+                 NUM = TRUE,
+                 LAB = "Percentage of ecosystem types",
+                SAVE = NULL)
 
-## load the spatial file 
-mem <- read_sf(dsn=mem_fl)
+bar_plot
 
-## plot the pelagic ecosystem types
-# plot(st_geometry(mem), axes=T)
-mem %>% 
-  st_transform(crs = 4326) %>% 
-  select(P_EcosysType) %>% 
-  plot(axes = T, key.pos = NULL, main = "Pelagic Ecosystem Types")
+# 
+# 
+# ## load the spatial file 
+# mem <- read_sf(dsn=mem_fl)
+# 
+# ## plot the pelagic ecosystem types
+# # plot(st_geometry(mem), axes=T)
+# mem %>% 
+#   st_transform(crs = 4326) %>% 
+#   select(P_EcosysType) %>% 
+#   plot(axes = T, key.pos = NULL, main = "Pelagic Ecosystem Types")
 
 ```
 
