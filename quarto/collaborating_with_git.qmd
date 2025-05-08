@@ -115,6 +115,11 @@ In RStudio, the same can be achieved via *Tools* \> *Project Options* \> *Git/SV
 
 **git clone \[url\]**
 
+In RStudio it is actioned through the File > New Project > Version Control > Git and pasting in the URL from your GitHub or GitLab repository.
+
+Alternatively from the terminal it is something like:  
+git clone https://github.com/username/repo.git
+
 **git pull**
 
 **git push**
