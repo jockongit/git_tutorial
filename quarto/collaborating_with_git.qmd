@@ -181,7 +181,7 @@ In RStudio, you stage the files by ticking their boxes in the *Staged* column of
 
 In the terminal, you stage all modified files with:  
 
-> git add .
+> git add -A
 
 or if you want to add specific files, name them:
 
@@ -197,6 +197,10 @@ To commit in RStudio, select the *Commit* button in the Git pane, with files sel
 Alternatively, the terminal syntax is as follows:
 
 > git commit -m "Your commit message describing what has changed."
+
+or to stage and commit in one step you can use:
+
+> git commit -am "Your commit message describing what has changed."
 
 Try to write meaningful commit messages, both to help your collaborators understand the changes and in case you need to identify a specific commit in a few days, months (or years) time.
 
