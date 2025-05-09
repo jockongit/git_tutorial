@@ -342,7 +342,7 @@ library(NBA.package)
 mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
 threat_fl <- list.files(path = here::here("data"), pattern = "^nba_example_thr_data.csv$", recursive = TRUE, full.names = TRUE)
 
-bar_plot <- NBA_plot(NBA_example_thr_data,
+bar_plot <- nba_plot(NBA_example_thr_data,
                   `OVERALL types`,
                   2:5,
                  CHRT = "bar",
