@@ -1,4 +1,4 @@
-# Git and some useful data science tricks
+# Starting out with Git and some useful data science tricks
 
 ## Purpose
 
@@ -9,14 +9,14 @@ Many of those suggestions are personal preferences that might be achieved in oth
 
 ## Status
 
-This work is in development and much of the detail has not yet been added.
+This work is in development and intended to be presented at a SANBI training workshop in May 2025.
 
 ## Getting started
 
-To clone this repository,
+To clone this repository in RStudio,
 
-  1.  Go to the [GitLab repository](https://gitlab.com/nba_2025/git_tutorial).
-  2.  Copy the relevant '*Clone with ...*' URL from the project page under the *Code* drop-down menu.
+  1.  Go to the [GitLab repository](https://gitlab.com/nba_2025/git_tutorial) or the [GitHub repository](https://github.com/jockongit/git_tutorial/tree/main).
+  2.  Copy the relevant '*Clone with ...*' URL from the project page under the *Code* drop-down menu (you need to have connected your machine to an online GitLab or GitHub profile prior).
   3.  Within RStudio, create a new project (under *File* menu) and select *Version Control* and then *Git* to paste the copied URL. Ensure you're happy with the directory where the project will be saved before you hit *Create Project* (**hint: I tend to save all my R projects in one 'Rprojects' folder, so that it is easy to back them up and I always know where to find them.**)  
       
 Once cloned, you can open the html files or the Quarto (*.qmd*) source files, both of which are in the *quarto* folder.

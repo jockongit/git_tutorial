@@ -96,7 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#things-to-watch-out-for" id="toc-things-to-watch-out-for" class="nav-link" data-scroll-target="#things-to-watch-out-for"><span class="header-section-number">2.7</span> Things to watch out for</a></li>
   </ul></li>
   <li><a href="#the-importance-of-branches" id="toc-the-importance-of-branches" class="nav-link" data-scroll-target="#the-importance-of-branches"><span class="header-section-number">3</span> The importance of branches</a></li>
-  <li><a href="#sec-datarepo" id="toc-sec-datarepo" class="nav-link" data-scroll-target="#sec-datarepo"><span class="header-section-number">4</span> A centralised data repository (within SANBI IT systems)</a></li>
+  <li><a href="#sec-datarepo" id="toc-sec-datarepo" class="nav-link" data-scroll-target="#sec-datarepo"><span class="header-section-number">4</span> A centralised data repository (with SANBI IT systems)</a></li>
   <li><a href="#general-notes-on-good-data-hygiene-see-borer-et-al.-2009" id="toc-general-notes-on-good-data-hygiene-see-borer-et-al.-2009" class="nav-link" data-scroll-target="#general-notes-on-good-data-hygiene-see-borer-et-al.-2009"><span class="header-section-number">5</span> General notes on good data hygiene (See Borer et al.&nbsp;2009)</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">6</span> References</a></li>
   </ul>
@@ -222,57 +222,111 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="2.2" class="anchored" data-anchor-id="what-is-gitlabgithub"><span class="header-section-number">2.2</span> What is GitLab/GitHub?</h2>
 <p>An online platform that allows you to share your project with the public, or selected collaborators, and your collaborators are able to make changes that you can then ‘accept’ (merge) into your project. The updated versions or changes to the project are ‘pushed’ (from computer to online repository) and ‘pulled’ (from online repository to computer) with Git commands.</p>
 <p>If you would like to version control your work on your own computer (and nothing further), then you need only Git (software) installed. If you would like to create an online repository (copy of your project) so that others can see it, or to be able to share your work with collaborators, then you will additionally need to create a profile on GitLab or GitHub (or equivalent) and ‘push’ your project to an online repository.</p>
+<p>We will only scratch the surface of the most common Git operations. An excellent resource for finding your feet with Git and using it with R is Jenny Bryan’s <a href="https://happygitwithr.com/">Happy Git and GitHub for the useR</a>.</p>
 </section>
 <section id="connecting-to-githubgitlab" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="connecting-to-githubgitlab"><span class="header-section-number">2.3</span> Connecting to GitHub/GitLab</h2>
-<p>Making the secure connection between RStudio (or Git) on your computer and your GitHub or GitLab profile can sometimes be a frustrating exercise. There are multiple ways of going about it, please read the relevant instructions for GitHub or GitLab. I have avoided trying to use SSH, mainly because I remember a staff member of mine struggling to SSH to a cluster computer from the SANBI network a few years ago (due to SANBI network restrictions). If anyone is using a SSH connection with GitHub/GitLab from SANBI’s network, please shout to correct my untested aversion!</p>
+<p>Making the secure connection between RStudio (or Git) on your computer and your GitHub or GitLab profile can sometimes be a frustrating exercise. There are <a href="https://happygitwithr.com/connect-intro">multiple ways of going about it</a>, please read the relevant instructions for GitHub or GitLab. I have avoided trying to use SSH, mainly because I remember a staff member of mine struggling to SSH to a cluster computer from the SANBI network a few years ago (due to SANBI network restrictions). If anyone is using a SSH connection with GitHub/GitLab from SANBI’s network, please shout to correct my untested aversion!</p>
+<section id="sec-githubAuth" class="level3">
+<h3 class="anchored" data-anchor-id="sec-githubAuth">GitHub authentication:</h3>
+<p>Go to https://github.com/settings/tokens and click “Generate token” to generate your personal access token (PAT). Recommendation is to select <em>repo</em>, <em>user</em>, and <em>workflow</em> before confirming <em>Generate token</em>.</p>
+<p>Ensure you safely store your PAT; this is your password for Git to communicate with GitHub!</p>
+<p>Install the R package gitcreds and then pass your PAT to it to enable Git to pull and push changes from and to GitHub:</p>
+<blockquote class="blockquote">
+<p>gitcreds::gitcreds_set()</p>
+</blockquote>
+<p><strong>Note:</strong> If any Git operations require a password to access GitHub, enter the PAT, not your GitHub profile password.</p>
+</section>
+<section id="gitlab-authentication" class="level3">
+<h3 class="anchored" data-anchor-id="gitlab-authentication">GitLab authentication</h3>
+<p>You can create <a href="https://gitlab.com/-/user_settings/personal_access_tokens">access tokens</a> very similarly to GitHub (see <a href="#sec-githubAuth" class="quarto-xref">Section&nbsp;2.3.1</a>).</p>
+<p>Unlike GitHub, GitLab allows you to use your GitLab profile username and password to authenticate. However, if you have enabled Two-Factor Authentication, then you must use a PAT as your password when prompted for Git operations.</p>
+</section>
 </section>
 <section id="common-git-functions" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="common-git-functions"><span class="header-section-number">2.4</span> Common Git functions</h2>
 <p>A general recommendation is to use cheat sheets when you’re learning a new tool, e.g.&nbsp;<a href="https://education.github.com/git-cheat-sheet-education.pdf">Git cheat sheet</a>.</p>
 <p>RStudio has integrated Git functionality and a Git interface on RStudio becomes visible once you have initialised Git version control on that project (close and reopen RStudio if it doesn’t appear). The Git interface on RStudio provides buttons for the most common Git operations, which can alternatively be executed in a terminal. Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal (and many advanced users revert to using the terminal only).</p>
-<section id="git-init" class="level3">
-<h3 class="anchored" data-anchor-id="git-init">git init</h3>
-<p>Once your Git profile is created, you can initialise (activate) Git on any project (folder).<br>
-</p>
+<section id="initialise-git" class="level3">
+<h3 class="anchored" data-anchor-id="initialise-git">Initialise Git</h3>
+<p>Once your Git profile is created, you can initialise (activate) Git on any project (folder). This action is needed only once for each project and if you clone a remote repository, you bypass this step.</p>
 <p>In RStudio, this can be achieved via <em>Tools</em> &gt; <em>Project Options</em> &gt; <em>Git/SVN</em>; select <em>Git</em> under <em>Version control system</em>.</p>
 <p>Alternatively, simply type <mark><em>git init</em></mark> in a terminal, ensuring you’re in the project root folder.</p>
 </section>
-<section id="git-clone" class="level3">
-<h3 class="anchored" data-anchor-id="git-clone">git clone</h3>
-<p>Very often the first thing you might want to do, is to clone an online repository. In RStudio it is accomplished through the menu: <em>File &gt; New Project &gt; Version Control &gt; Git</em> and pasting in the URL copied from the GitHub/GitLab repository.</p>
-<p>Alternatively from the terminal it is simply:</p>
+<section id="cloning-remote-repositories" class="level3">
+<h3 class="anchored" data-anchor-id="cloning-remote-repositories">Cloning remote repositories</h3>
+<p>Very often the first thing you might want to do, is to clone an online repository from platforms such as GitHub or GitLab. To do so, navigate to the online repository website and copy the relevant URL from the <em>Code</em> drop-down. In RStudio, create the new cloned project via <em>File &gt; New Project &gt; Version Control &gt; Git</em> and pasting the URL into the relevant space, checking that you’re happy with the project directory name and location, before confirming <em>Create Project</em>.</p>
+<p>Alternatively, create a project folder, navigate to it with the terminal, and clone the project with the following code, but replacing the URL with the one copied from the repository:</p>
 <blockquote class="blockquote">
 <p>git clone https://github.com/username/repo.git</p>
 </blockquote>
+<p>This approach of cloning online repositories is how most of us novice Git users start a new project: We create a new empty project on GitHub/GitLab, clone it to our computers, and then start updating the <em>README.md</em> and create the project folders, files and update the .gitignore file(s). Once the basic parts are in place, we can do our first cycle of staging the changes, committing them to a version and pushing them to the remote repository.</p>
+<p>Alternatively, you can <a href="https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub">push an existing project to GitHub/GitLab</a>, but I’ve struggled trying to achieve this in the past. A way to circumvent it is to do the above clone and then copy and paste your project contents into the newly cloned (but mostly empty) project folder.</p>
 </section>
-<section id="git-add-or-staging" class="level3">
-<h3 class="anchored" data-anchor-id="git-add-or-staging">git add or ‘staging’</h3>
+<section id="staging-changes" class="level3">
+<h3 class="anchored" data-anchor-id="staging-changes">Staging changes</h3>
 <p>Selecting the changed files that you want to commit, is referred to as <em>staging</em> them. The files that have not changed do not need to be staged (nor committed), but will be part of the commit version.</p>
-<p>In <em>RStudio</em>, you select the files by ticking the boxes in the <em>Staged</em> column of the Git pane.</p>
-<p>In the terminal, you stage all files (that have changed) with:</p>
+<p>In RStudio, you stage the files by ticking their boxes in the <em>Staged</em> column of the Git pane.</p>
+<p>In the terminal, you stage all modified files with:</p>
 <blockquote class="blockquote">
 <p>git add .</p>
 </blockquote>
-<p>or if you want to add specific files only, name them:</p>
+<p>or if you want to add specific files, name them:</p>
 <blockquote class="blockquote">
 <p>git add filename1.ext filename2.ext filename3.ext</p>
 </blockquote>
 </section>
 <section id="git-commit" class="level3">
-<h3 class="anchored" data-anchor-id="git-commit">git commit</h3>
-<p>To ‘save’ or take a snapshot of your project folder (everything that is not ignored in <em>.gitignore</em>), you need to make a commit.</p>
+<h3 class="anchored" data-anchor-id="git-commit">Git commit</h3>
+<p>To ‘save’ or take a snapshot of your project folder with the staged file changes (and everything else not in <em>.gitignore</em>), you need to make a commit. You can stage and commit only certain (changed) files, while leaving other changed files unstaged and uncommited (leaving them in the previous committed version state).</p>
+<p>To commit in RStudio, select the <em>Commit</em> button in the Git pane, with files selected for staging, add a commit message in the <em>Commit message</em> box and click <em>Commit</em>.</p>
+<p>Alternatively, the terminal syntax is as follows:</p>
+<blockquote class="blockquote">
+<p>git commit -m “Your commit message describing what has changed.”</p>
+</blockquote>
+<p>Try to write meaningful commit messages, both to help your collaborators understand the changes and in case you need to identify a specific commit in a few days, months (or years) time.</p>
+</section>
+<section id="pulling-updates" class="level3">
+<h3 class="anchored" data-anchor-id="pulling-updates">Pulling updates</h3>
+<p>To pull the latest version from the online repository (referred to as ‘remote’), use the <em>Pull</em> button on the Git pane in RStudio.</p>
+<p>This is equivalent to typing the following in a terminal:</p>
+<blockquote class="blockquote">
+<p>git pull</p>
+</blockquote>
+<p>If you are collaborating with others on a project, it becomes vital to pull changes <strong>before</strong> you start making changes, so that you’re working with the latest additions from your team mates!</p>
+</section>
+<section id="pushing-changes" class="level3">
+<h3 class="anchored" data-anchor-id="pushing-changes">Pushing changes</h3>
+<p>After you have committed changes, those can be pushed to the remote repository by clicking the <em>Push</em> button on the Git pane in RStudio.</p>
+<p>Alternatively, the terminal command is:</p>
+<blockquote class="blockquote">
+<p>git push</p>
+</blockquote>
+<p>If one of your teammates has pushed their changes to the online repository since your previous pull, you may get a failed push warning, talking about a merge conflict. In most instances, this can be easily resolved with a ‘Pull with Rebase’ (see the drop-down arrow next to the <em>Pull</em> button in RStudio or type <mark>git pull --rebase</mark> into a terminal).</p>
 </section>
 <section id="git-diff" class="level3">
 <h3 class="anchored" data-anchor-id="git-diff">git diff</h3>
+<p>Highlighting the differences between two versions of the same file can be very useful when trouble-shooting a merge conflict or trying to remind yourself of what changes you’ve made (if any). The <em>Diff</em> button on RStudio’s Git pane does that for you and by default shows up any changed files that have not yet been committed. Similar can be achieved from the command line with</p>
+<blockquote class="blockquote">
+<p>git diff</p>
+</blockquote>
+<p>to scroll through all the changes for each file, or to examine a specific file, by adding its name:</p>
+<blockquote class="blockquote">
+<p>git diff filename.ext</p>
+</blockquote>
 </section>
-<section id="git-pull" class="level3">
-<h3 class="anchored" data-anchor-id="git-pull">git pull</h3>
-</section>
-<section id="git-push" class="level3">
-<h3 class="anchored" data-anchor-id="git-push">git push</h3>
-<p>The most frequent sequence used most of the time is:</p>
-<p><em>git pull</em> to ensure you have the newest version, after which you make your changes; <em>git add</em> to stage the changed files; <em>git commit</em> to commit the changes to a version and add a meaningful commit message; <em>git push</em> to push them to the remote repository;</p>
+<section id="the-most-common-tasks" class="level3">
+<h3 class="anchored" data-anchor-id="the-most-common-tasks">The most common tasks</h3>
+<p>Although there are many more Git commands and most of them can be elaborated on with several options or additional arguments, by far the most common sequence of tasks for us tend to be:</p>
+<ul>
+<li><strong>git pull</strong> to ensure we have the newest version;</li>
+<li><strong>git add .</strong> to stage changed files, followed by</li>
+<li><strong>git commit -m “descriptive commit message”</strong> to commit the changes;</li>
+<li><strong>git push</strong> to push them to the remote repository;</li>
+<li><strong>git pull --rebase</strong> if the push threw a merge conflict, followed by another <strong>git push</strong></li>
+</ul>
+<p>If you are facing problems getting Git and GitHub/GitLab to work with RStudio, try to read <a href="https://happygitwithr.com/troubleshooting">Happy Git and GitHub for the useR</a> or other online resources.</p>
+<p>Remember to never create a Git repository inside another Git repository.</p>
 </section>
 </section>
 <section id="the-importance-of-.gitignore" class="level2" data-number="2.5">
@@ -301,28 +355,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-importance-of-branches" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> The importance of branches</h1>
-<p>Once a project has become mature (contains a substantial amount of work and is worth protecting), and especially if multiple people are collaborating on the same project, it becomes vital that further development moves to ‘feature’ branches and collaborators avoid making changes directly to the main branch. A certain feature is added (or improved) on the feature branch and only once it has been tested and reviewed (make sure it doesn’t break anything!), does it get merged into the main branch. All development, exploration and testing of new methods or features happens on the feature branches and the main branch is ‘protected’. Once their improvement/feature is complete and working as they intended, that collaborator opens a ‘merge request’. Usually the owner(s) of the project are responsible for reviewing the changes and deciding whether they approve the merge or not.</p>
+<p>Once a project has become mature (contains a substantial amount of work and is worth protecting), it becomes important that further development moves to separate ‘feature’ branches and collaborators avoid making changes directly to the main branch. A branch represents a complete working copy of the project and anything changed on a feature branch has no bearing on the main branch, until it is explicitly merged into the main branch, transferring its updates into the main branch. The developer of the feature branch opens a ‘merge request’ on GitLab/GitHub, once their changes have been tested and reviewed (make sure they don’t break anything!). The owner(s) of the project are responsible for reviewing the changes and deciding whether they approve the merge or not. Typically (and by default settings), a feature branch is deleted once it has been merged into a main branch, as that updated work has moved into the main branch.</p>
+<p>In RStudio, a branch is easily created by clicking the <em>New Branch</em> button in the Git pain. Give it a concise but descriptive name. The same can be achieved in the terminal with:</p>
+<blockquote class="blockquote">
+<p>git checkout -b add_threat_plot</p>
+</blockquote>
+<p>which is the single-step equivalent of:</p>
+<blockquote class="blockquote">
+<p>git branch add_threat_plot git checkout add_threat_plot</p>
+</blockquote>
 <p>Once you start collaborating on projects, it becomes especially important to pull and push frequently. Before you start working on a new feature, pull the remote project, in case your teammates have made some changes since you last worked on it. Otherwise, you’ll be adding your changes to an outdated version!</p>
 </section>
 <section id="sec-datarepo" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> A centralised data repository (within SANBI IT systems)</h1>
-<p>Reproducible science requires us to apply exactly the same methods to exactly the same datasets. Sharing scripted workflows goes a long way to make the methods reproducible, but the other critical aspect is ensuring that the input data are identical. If we all have our own copy of input datasets on our machines, how do we ensure that they always remain the same, including when the data manager/owner adds new data or makes corrections? Below is a suggested approach that we are starting to implement. If anyone foresees problems with it, or if you have other solutions, please share!</p>
-<p>Within the <em>SANBI Marine Programme</em> Team (Microsoft Teams), we have a ‘marine_data’ channel, where we are curating all of our spatial layers and datasets. Because it includes datasets that may not be shared with others and/or have usage restrictions, it is a private (protected) channel and membership is restricted to those who need it. Although not critical to this demonstration, the data are grouped in thematic subfolders and a data inventory (spreadsheet) in the root folder captures the metadata and the location (folder path) of the datasets. This Teams channel is intended to be our centralised and authoritative data storage. The advantage of using a Teams channel over a staff member’s OneDrive account, is that the channel should be safe and persist irrespective of staff turnover. If datasets are updated or fixed, they should be updated here and tracked in the data inventory.</p>
-<p>Up until a few days ago, we had to manually download these data and/or remember to re-download the relevant folder if data were added/changed. However, Natasha recently figured out a system by which we can sync the Teams channel to our computers. This is achieved by adding a shortcut to the Teams channel to our OneDrive account, and the OneDrive account is synced to our computers.</p>
+<h1 data-number="4"><span class="header-section-number">4</span> A centralised data repository (with SANBI IT systems)</h1>
+<p>Reproducible science requires us to apply exactly the same methods to exactly the same datasets. Sharing scripted workflows goes a long way to make the methods reproducible, but another critical aspect is ensuring that the input data are identical. If we all have our own copy of input datasets on our machines, how do we ensure that they always remain the same, including when the data manager/owner updates them with new data or corrections? Below is a suggested approach that we are starting to implement. If anyone foresees problems with it, or if you have other solutions, please share!</p>
+<p>Within the <em>SANBI Marine Programme</em> Team (Microsoft Teams), we have a ‘marine_data’ channel, where we curate all of our spatial layers and datasets. Because it includes datasets that have sharing and usage restrictions, it is a private (protected) channel and membership is restricted to those who need it. Although not critical to this demonstration, the data are grouped in thematic subfolders and a data inventory (spreadsheet) in the root folder captures the metadata and the location (folder path) of the datasets. This Teams channel is our ‘centralised and authoritative data’ storage. The advantage of using a Teams channel rather than a staff member’s OneDrive account, is that the channel should be safe and persist irrespective of staff turnover. If datasets are updated, they need to be updated here and tracked in the data inventory.</p>
+<p>Up until a few days ago, we manually downloaded a copy of the data to our computers. We had to remember to re-download the relevant folder or dataset if changes were made to them. However, Natasha recently noticed that we can add a shortcut to the Teams channel in our OneDrive account, and the OneDrive account is synced to our computers.</p>
 <p>Lets try this:</p>
 <ol type="1">
 <li><p>Navigate to your MS Teams and to the nba_data channel within the NBA_data team.</p></li>
 <li><p>Click on ‘Add shortcut to OneDrive’ in the options near the top (center) of the screen.</p></li>
 <li><p>If it is not already, set up your computer to <a href="https://support.microsoft.com/en-us/office/sync-files-with-onedrive-in-windows-615391c4-2bd3-4aae-a42a-858262e42a49">sync your OneDrive account</a> (or certain parts of it), including the newly added <em>nba_data</em> folder.</p></li>
 </ol>
-<p>If you manage that, you have a synced version of the Teams data folder on your computers and multiple people can access the same dataset. Any updates or changes made to that dataset on Teams will sync through to everyone’s OneDrive and their computer (when they access that file next).</p>
+<p>If you manage that, you have a synced version of the Teams data folder on your computers and multiple people can access the same dataset. Any updates or changes made to that dataset on Teams will sync through to everyone’s OneDrive and their computer (when they next access that file).</p>
 <p>Lets try the same exercise as above in <a href="#sec-avoidDupl" class="quarto-xref">Section&nbsp;1.1</a>, but this time create a symbolic link from your project data drive to the nba_data folder we just added to OneDrive. For me, this was typing the following into Windows Command Prompt:</p>
 <p>mklink /j “C:\Users\J.Currie\Documents\Rprojects\git_tutorial\data\link2nba_data” “C:\Users\J.Currie\OneDrive\OneDrive - sanbi.org.za\shortcut_to_nba_data”</p>
 <p>So, now we can all access the same nba_data datasets with our R projects.</p>
 <p><strong>But, beware:</strong></p>
 <ol type="1">
-<li><p>Never write to your data (input folder)! This rule becomes absolutely critical if we are all sharing access to a central authoritative data repository. These data are not your personal copy! Do not make changes to them unless you are the authority/owner/data manager or have explicit permission or instruction to do so. (Having read-only access would be ideal if we can configure that)</p></li>
-<li><p>Unless it is appropriate to push the data to the online repository with your project (and the data folder does not violate your online repo size limits), you may likely want to add the linked folder (‘link2nba_data’ in the above example) to your .gitignore file. I already did this for this tutorial, because I wanted you to add those data as a linked folder via your OneDrive account and not receive them when you cloned the online repo.</p></li>
+<li><p>Never write to your data (input) folder! This rule becomes absolutely critical if we are all sharing access to a central authoritative data repository. These data are not your personal copy! Do not make changes to them unless you are the authority/owner/data manager or have explicit permission or instruction to do so. (Having read-only access would be ideal if we can configure that)</p></li>
+<li><p>Unless it is appropriate to share your input data with the online repository (and the data folder does not exceed your online repo size limits), you may likely want to add the linked folder (‘link2nba_data’ in the above example) to your .gitignore file. I already did this for this tutorial, because I wanted you to add those data as a linked folder via your OneDrive account and not receive them when you cloned the online repo.</p></li>
 </ol>
 <p>Lets load some of the data and play with them:</p>
 <div class="cell">
@@ -355,16 +417,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="general-notes-on-good-data-hygiene-see-borer-et-al.-2009" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> General notes on good data hygiene (See Borer et al.&nbsp;2009)</h1>
-<p>Use descriptive, standardised names for your files and folder names. Avoid spaces - use underscores instead.</p>
+<p>Use descriptive, standardised names for your files and folder names. Avoid spaces, use underscores instead.</p>
 <p>Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.</p>
 <p>Have your data in long table format (add data in rows, not columns).</p>
 <p>Each column should contain only one type (class) of information (either text, numeric, etc.).</p>
-<p>Always maintain effective metadata: clear, unambiguous, comprehensive</p>
-<p>Use a scripted program for analysis. Store data in non-proprietary software formats. Consider hardware formats &amp; longevity (save data from those floppy disks!). Always store an uncorrected, original data file.</p>
+<p>Always maintain effective metadata: clear, unambiguous, comprehensive.</p>
+<p>Use a scripted program for analysis.</p>
+<p>Store data in non-proprietary software formats and consider hardware formats &amp; longevity (save data from those floppy disks!).</p>
+<p>Always store an uncorrected, original data file.</p>
 </section>
 <section id="references" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> References</h1>
 <p>Borer ET, Seabloom EW, Jones MB, Schildhauer M (2009) Some Simple Guidelines for Effective Data Management. The Bulletin of the Ecological Society of America 90:205–214. doi: 10.1890/0012-9623-90.2.205</p>
+<p>Bryan J. <a href="https://happygitwithr.com/">Happy Git and GitHub for the useR.</a></p>
 </section>
 
 </main>
