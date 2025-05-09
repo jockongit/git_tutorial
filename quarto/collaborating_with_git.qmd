@@ -97,6 +97,7 @@ Before you start using Git for the first time, you need to set your credentials 
 
 or in R using:\
 library(usethis)
+
 use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
 
 See some [GitHub information](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address) on the commit email address and your options, which you may want to read if you're worried about exposing your email address online.
@@ -166,7 +167,9 @@ This approach of cloning online repositories is how most of us novice Git users 
 We create a new empty project on GitHub/GitLab, clone it to our computers, and then start updating the *README.md* and create the project folders, files and update the .gitignore file(s).
 Once the basic parts are in place, we can do our first cycle of staging the changes, committing them to a version and pushing them to the remote repository.
 
-Alternatively, you can [push an existing project to GitHub/GitLab](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub), but I've struggled trying to achieve this in the past. 
+Alternatively, if you already have a project on your computure that you wish to connect to GitLab/GitHub then you need to make sure it is an R project and has git initialised. If you want to connect to HitHub it is very easy, just run **usethis::use_github()** in an r script in the project you want to connect. 
+
+If you want to connect to GitLab you can [push an existing project to GitHub/GitLab](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub).  but I've struggled trying to achieve this in the past. 
 A way to circumvent it is to do the above clone and then copy and paste your project contents into the newly cloned (but mostly empty) project folder.
 
 ### Staging changes
