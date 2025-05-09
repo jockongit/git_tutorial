@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jock Currie, Natasha Besseling">
-<meta name="dcterms.date" content="2025-05-08">
+<meta name="dcterms.date" content="2025-05-09">
 
 <title>Collaborating with Git</title>
 <style>
@@ -89,17 +89,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#what-is-git" id="toc-what-is-git" class="nav-link" data-scroll-target="#what-is-git"><span class="header-section-number">2.1</span> What is Git?</a></li>
   <li><a href="#what-is-gitlabgithub" id="toc-what-is-gitlabgithub" class="nav-link" data-scroll-target="#what-is-gitlabgithub"><span class="header-section-number">2.2</span> What is GitLab/GitHub?</a></li>
+  <li><a href="#connecting-to-githubgitlab" id="toc-connecting-to-githubgitlab" class="nav-link" data-scroll-target="#connecting-to-githubgitlab"><span class="header-section-number">2.3</span> Connecting to GitHub/GitLab</a></li>
+  <li><a href="#common-git-functions" id="toc-common-git-functions" class="nav-link" data-scroll-target="#common-git-functions"><span class="header-section-number">2.4</span> Common Git functions</a></li>
+  <li><a href="#the-importance-of-.gitignore" id="toc-the-importance-of-.gitignore" class="nav-link" data-scroll-target="#the-importance-of-.gitignore"><span class="header-section-number">2.5</span> The importance of <em>.gitignore</em></a></li>
+  <li><a href="#sec-renviron" id="toc-sec-renviron" class="nav-link" data-scroll-target="#sec-renviron"><span class="header-section-number">2.6</span> The <em>.Renviron</em> file</a></li>
+  <li><a href="#things-to-watch-out-for" id="toc-things-to-watch-out-for" class="nav-link" data-scroll-target="#things-to-watch-out-for"><span class="header-section-number">2.7</span> Things to watch out for</a></li>
   </ul></li>
-  <li><a href="#common-git-functions" id="toc-common-git-functions" class="nav-link" data-scroll-target="#common-git-functions"><span class="header-section-number">3</span> Common Git functions</a>
-  <ul class="collapse">
-  <li><a href="#the-importance-of-.gitignore" id="toc-the-importance-of-.gitignore" class="nav-link" data-scroll-target="#the-importance-of-.gitignore"><span class="header-section-number">3.1</span> The importance of <em>.gitignore</em></a></li>
-  <li><a href="#sec-renviron" id="toc-sec-renviron" class="nav-link" data-scroll-target="#sec-renviron"><span class="header-section-number">3.2</span> The <em>.Renviron</em> file</a></li>
-  <li><a href="#things-to-watch-out-for" id="toc-things-to-watch-out-for" class="nav-link" data-scroll-target="#things-to-watch-out-for"><span class="header-section-number">3.3</span> Things to watch out for</a></li>
-  </ul></li>
-  <li><a href="#the-importance-of-branches" id="toc-the-importance-of-branches" class="nav-link" data-scroll-target="#the-importance-of-branches"><span class="header-section-number">4</span> The importance of branches</a></li>
-  <li><a href="#sec-datarepo" id="toc-sec-datarepo" class="nav-link" data-scroll-target="#sec-datarepo"><span class="header-section-number">5</span> A centralised data repository (within SANBI IT systems)</a></li>
-  <li><a href="#general-notes-on-good-data-hygiene-see-borer-et-al.-2009" id="toc-general-notes-on-good-data-hygiene-see-borer-et-al.-2009" class="nav-link" data-scroll-target="#general-notes-on-good-data-hygiene-see-borer-et-al.-2009"><span class="header-section-number">6</span> General notes on good data hygiene (See Borer et al.&nbsp;2009)</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
+  <li><a href="#the-importance-of-branches" id="toc-the-importance-of-branches" class="nav-link" data-scroll-target="#the-importance-of-branches"><span class="header-section-number">3</span> The importance of branches</a></li>
+  <li><a href="#sec-datarepo" id="toc-sec-datarepo" class="nav-link" data-scroll-target="#sec-datarepo"><span class="header-section-number">4</span> A centralised data repository (within SANBI IT systems)</a></li>
+  <li><a href="#general-notes-on-good-data-hygiene-see-borer-et-al.-2009" id="toc-general-notes-on-good-data-hygiene-see-borer-et-al.-2009" class="nav-link" data-scroll-target="#general-notes-on-good-data-hygiene-see-borer-et-al.-2009"><span class="header-section-number">5</span> General notes on good data hygiene (See Borer et al.&nbsp;2009)</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">6</span> References</a></li>
   </ul>
 </nav>
 </div>
@@ -124,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">8 May 2025</p>
+      <p class="date">9 May 2025</p>
     </div>
   </div>
   
@@ -173,8 +172,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In the Windows Command Prompt (cmd), use the <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/mklink">mklink</a> function in the following way:</p>
 <p>mklink /j “absolute_path\to\your\Rproject\data\link2gis” “absolute_path\to\your\data\gis”</p>
 <p>to create a linked folder (first set of inverted commas) that points to your target folder (second set of inveted commas). Hint: copy the absolute paths from your Windows Explorer. If you repeat this approach across all your R projects, they can all point to a single directory that houses your input data somewhere else on your computer.</p>
-<p><strong>NB Warning:</strong> Make sure that you add the symbolic link, e.g.&nbsp;<em>data/link2gis</em> in the above example (or your entire <em>data/</em> folder) to the <em>.gitignore</em> file! Otherwise (*on Windows), Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.</p>
-<p>By creating the above linked folders, together with the use of the R command <em>list.files()</em> to search for and load your input files, we can have complete interoperability between different machines (or collaborators), even if they have their data stored in different places (under different folder names).</p>
+<p><strong>NB Warning:</strong> Make sure that you add the symbolic link, e.g.&nbsp;<em>data/link2gis</em> in the above example (or your entire <em>data/</em> folder) to the <em>.gitignore</em> file! Otherwise, Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.</p>
+<p>By creating the above linked folders, together with the use of the R function <em>list.files()</em> to search for and load your input files, we can have complete interoperability between different machines (or collaborators), even if they have their data stored in different places (under different folder names).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">### example</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -203,7 +202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The file will be found as long as it exists somewhere within the path specified. To demonstrate, rename the ‘pretend_link2gis’ folder name and rerun it. Obviously, for consistent results and reproducibility, the collaborators need to ensure they have precisely the same input data! See <a href="#sec-datarepo" class="quarto-xref">Section&nbsp;5</a> for a trick to accomplish that.</p>
+<p>The file will be found as long as it exists somewhere within the path specified. To demonstrate, rename the ‘pretend_link2gis’ folder name and rerun it. Obviously, for consistent results and reproducibility, the collaborators need to ensure they have precisely the same input data! See <a href="#sec-datarepo" class="quarto-xref">Section&nbsp;4</a> for a trick to accomplish that.</p>
 </section>
 </section>
 <section id="version-control" class="level1" data-number="2">
@@ -212,66 +211,101 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-is-git" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="what-is-git"><span class="header-section-number">2.1</span> What is Git?</h2>
 <p>A solution to <strong>track</strong> and <strong>document</strong> changes to files (inputs, outputs, results, document versions, etc). It allows you to take a snapshot of your files at a point in time, together with a commit message, so that you can roll back to that previous state (or recover individual files from that state) at any future time.</p>
-<p>The (hidden) .git folder appears inside your project project folder once you have initialised Git on that project and it contains the (magic) history that tracks your committed changes over time.</p>
+<p>Git will track changes in any file formats, including Word documents, spatial files, etc. However, the very useful <a href="https://www.datacamp.com/tutorial/git-diff-guide"><em>git diff</em></a> function, which highlights differences in the <strong>content</strong> between file versions, works only for selected (mostly text) file types, which includes most scripting file formats.</p>
+<p>The (hidden) .git folder appears inside your project folder once you have initialised Git on that project and it contains the (magic) history that tracks your committed changes over time.</p>
+<p>Before you start using Git for the first time, you need to set your credentials within a terminal:<br>
+&gt; git config --global user.name [YOUR NAME]<br>
+&gt; git config --global user.email [YOUR EMAIL]</p>
+<p>See some <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address">GitHub information</a> on the commit email address and your options, which you may want to read if you’re worried about exposing your email address online.</p>
 </section>
 <section id="what-is-gitlabgithub" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="what-is-gitlabgithub"><span class="header-section-number">2.2</span> What is GitLab/GitHub?</h2>
 <p>An online platform that allows you to share your project with the public, or selected collaborators, and your collaborators are able to make changes that you can then ‘accept’ (merge) into your project. The updated versions or changes to the project are ‘pushed’ (from computer to online repository) and ‘pulled’ (from online repository to computer) with Git commands.</p>
 <p>If you would like to version control your work on your own computer (and nothing further), then you need only Git (software) installed. If you would like to create an online repository (copy of your project) so that others can see it, or to be able to share your work with collaborators, then you will additionally need to create a profile on GitLab or GitHub (or equivalent) and ‘push’ your project to an online repository.</p>
-<p>Git will track changes in any file formats, including Word documents, spatial files, etc. However, the <em>git diff</em> function will tend to show differences in the file <strong>content</strong> only for text files (which includes most script files).</p>
 </section>
+<section id="connecting-to-githubgitlab" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="connecting-to-githubgitlab"><span class="header-section-number">2.3</span> Connecting to GitHub/GitLab</h2>
+<p>Making the secure connection between RStudio (or Git) on your computer and your GitHub or GitLab profile can sometimes be a frustrating exercise. There are multiple ways of going about it, please read the relevant instructions for GitHub or GitLab. I have avoided trying to use SSH, mainly because I remember a staff member of mine struggling to SSH to a cluster computer from the SANBI network a few years ago (due to SANBI network restrictions). If anyone is using a SSH connection with GitHub/GitLab from SANBI’s network, please shout to correct my untested aversion!</p>
 </section>
-<section id="common-git-functions" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Common Git functions</h1>
-<p>Use cheat sheets when you’re learning a new tool, e.g.&nbsp;<a href="https://education.github.com/git-cheat-sheet-education.pdf">Git cheat sheet</a>.</p>
+<section id="common-git-functions" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="common-git-functions"><span class="header-section-number">2.4</span> Common Git functions</h2>
+<p>A general recommendation is to use cheat sheets when you’re learning a new tool, e.g.&nbsp;<a href="https://education.github.com/git-cheat-sheet-education.pdf">Git cheat sheet</a>.</p>
 <p>RStudio has integrated Git functionality and a Git interface on RStudio becomes visible once you have initialised Git version control on that project (close and reopen RStudio if it doesn’t appear). The Git interface on RStudio provides buttons for the most common Git operations, which can alternatively be executed in a terminal. Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal (and many advanced users revert to using the terminal only).</p>
-<p>Before you start using Git for the first time, you need to set your credentials within a terminal:<br>
-git config --global user.name [YOUR NAME]<br>
-git config --global user.email [YOUR EMAIL]</p>
-<p>Thereafter, you can initialise (activate) git on any project with:<br>
-<strong>git init</strong> (make sure you’re in the project folder)<br>
-In RStudio, the same can be achieved via <em>Tools</em> &gt; <em>Project Options</em> &gt; <em>Git/SVN</em>; select Git under <em>Version control system</em>.</p>
-<p><strong>git commit</strong></p>
-<p><strong>git diff</strong></p>
-<p><strong>git clone [url]</strong></p>
-<p>In RStudio it is actioned through the File &gt; New Project &gt; Version Control &gt; Git and pasting in the URL from your GitHub or GitLab repository.</p>
-<p>Alternatively from the terminal it is something like:<br>
-git clone https://github.com/username/repo.git</p>
-<p><strong>git pull</strong></p>
-<p><strong>git push</strong></p>
+<section id="git-init" class="level3">
+<h3 class="anchored" data-anchor-id="git-init">git init</h3>
+<p>Once your Git profile is created, you can initialise (activate) Git on any project (folder).<br>
+</p>
+<p>In RStudio, this can be achieved via <em>Tools</em> &gt; <em>Project Options</em> &gt; <em>Git/SVN</em>; select <em>Git</em> under <em>Version control system</em>.</p>
+<p>Alternatively, simply type <mark><em>git init</em></mark> in a terminal, ensuring you’re in the project root folder.</p>
+</section>
+<section id="git-clone" class="level3">
+<h3 class="anchored" data-anchor-id="git-clone">git clone</h3>
+<p>Very often the first thing you might want to do, is to clone an online repository. In RStudio it is accomplished through the menu: <em>File &gt; New Project &gt; Version Control &gt; Git</em> and pasting in the URL copied from the GitHub/GitLab repository.</p>
+<p>Alternatively from the terminal it is simply:</p>
+<blockquote class="blockquote">
+<p>git clone https://github.com/username/repo.git</p>
+</blockquote>
+</section>
+<section id="git-add-or-staging" class="level3">
+<h3 class="anchored" data-anchor-id="git-add-or-staging">git add or ‘staging’</h3>
+<p>Selecting the changed files that you want to commit, is referred to as <em>staging</em> them. The files that have not changed do not need to be staged (nor committed), but will be part of the commit version.</p>
+<p>In <em>RStudio</em>, you select the files by ticking the boxes in the <em>Staged</em> column of the Git pane.</p>
+<p>In the terminal, you stage all files (that have changed) with:</p>
+<blockquote class="blockquote">
+<p>git add .</p>
+</blockquote>
+<p>or if you want to add specific files only, name them:</p>
+<blockquote class="blockquote">
+<p>git add filename1.ext filename2.ext filename3.ext</p>
+</blockquote>
+</section>
+<section id="git-commit" class="level3">
+<h3 class="anchored" data-anchor-id="git-commit">git commit</h3>
+<p>To ‘save’ or take a snapshot of your project folder (everything that is not ignored in <em>.gitignore</em>), you need to make a commit.</p>
+</section>
+<section id="git-diff" class="level3">
+<h3 class="anchored" data-anchor-id="git-diff">git diff</h3>
+</section>
+<section id="git-pull" class="level3">
+<h3 class="anchored" data-anchor-id="git-pull">git pull</h3>
+</section>
+<section id="git-push" class="level3">
+<h3 class="anchored" data-anchor-id="git-push">git push</h3>
 <p>The most frequent sequence used most of the time is:</p>
 <p><em>git pull</em> to ensure you have the newest version, after which you make your changes; <em>git add</em> to stage the changed files; <em>git commit</em> to commit the changes to a version and add a meaningful commit message; <em>git push</em> to push them to the remote repository;</p>
-<section id="the-importance-of-.gitignore" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="the-importance-of-.gitignore"><span class="header-section-number">3.1</span> The importance of <em>.gitignore</em></h2>
+</section>
+</section>
+<section id="the-importance-of-.gitignore" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="the-importance-of-.gitignore"><span class="header-section-number">2.5</span> The importance of <em>.gitignore</em></h2>
 <p>The <em>.gitignore</em> file is a text file that lists which files (or directories) should not be tracked by Git. In other words, those files/directories listed will not appear at all in the Git repository and any changes to them will not be tracked.</p>
 <p>This is useful for many different contexts, e.g.:</p>
 <ul>
 <li>sensitive input or output files you do not want shared with those accessing your project;<br>
 </li>
-<li>your secret credentials saved in the <em>.Renviron</em> file (see <a href="#sec-renviron" class="quarto-xref">Section&nbsp;3.2</a>);<br>
+<li>your secret credentials saved in the <em>.Renviron</em> file (see <a href="#sec-renviron" class="quarto-xref">Section&nbsp;2.6</a>);<br>
 </li>
 <li>large files that will cause you to exceed file size or repository size limits;</li>
 <li>temporary files or other files that change frequently but have no bearing on project contents;</li>
 </ul>
 </section>
-<section id="sec-renviron" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="sec-renviron"><span class="header-section-number">3.2</span> The <em>.Renviron</em> file</h2>
+<section id="sec-renviron" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="sec-renviron"><span class="header-section-number">2.6</span> The <em>.Renviron</em> file</h2>
 <p>Any login credentials (e.g.&nbsp;username and password to access your databases) or other sensitive information that you want accessible to your R session, but which you do not want to share with collaborators (or the public if your project is public), you should add to a special file named <em>.Renviron</em>. This text file is treated in a special way, in that objects defined in it are automatically loaded into your R environment when you open your project in RStudio. If you want the same credentials accessible across all your R projects, you can save such information in an <em>.Renviron</em> file in your <em>HOME</em> directory. If you want different credentials accessible to different projects, you can instead create a project-specific <em>.Renviron</em> file in your project root directory. Remember, if you make changes in your .Renviron file, you need to restart R to load those changes.</p>
 <p><strong>Very important:</strong> Make a habit of adding ‘.Renviron’ to your <em>.gitignore</em> file, so that the sensitive information you have put there is not pushed to your online repository!</p>
 </section>
-<section id="things-to-watch-out-for" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="things-to-watch-out-for"><span class="header-section-number">3.3</span> Things to watch out for</h2>
+<section id="things-to-watch-out-for" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="things-to-watch-out-for"><span class="header-section-number">2.7</span> Things to watch out for</h2>
 <p>Always review and be certain about what is included or not included in <em>.gitignore</em>. We need to be careful to not share (push) sensitive data or credentials - e.g.&nbsp;it would be a horrible mistake to push your collaborator’s highly sensitive data to a public Git repository!</p>
 <p>Large file size limits and overall repository size limits need to be taken into consideration. For example, if you create (or include) a file &gt; 100 MB in your project, you’ll be able to commit it on Git on your local machine, but when you try to push that commit to GitLab, it will be rejected (and can get complicated quickly).</p>
 </section>
 </section>
-<section id="the-importance-of-branches" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> The importance of branches</h1>
+<section id="the-importance-of-branches" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> The importance of branches</h1>
 <p>Once a project has become mature (contains a substantial amount of work and is worth protecting), and especially if multiple people are collaborating on the same project, it becomes vital that further development moves to ‘feature’ branches and collaborators avoid making changes directly to the main branch. A certain feature is added (or improved) on the feature branch and only once it has been tested and reviewed (make sure it doesn’t break anything!), does it get merged into the main branch. All development, exploration and testing of new methods or features happens on the feature branches and the main branch is ‘protected’. Once their improvement/feature is complete and working as they intended, that collaborator opens a ‘merge request’. Usually the owner(s) of the project are responsible for reviewing the changes and deciding whether they approve the merge or not.</p>
 <p>Once you start collaborating on projects, it becomes especially important to pull and push frequently. Before you start working on a new feature, pull the remote project, in case your teammates have made some changes since you last worked on it. Otherwise, you’ll be adding your changes to an outdated version!</p>
 </section>
-<section id="sec-datarepo" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> A centralised data repository (within SANBI IT systems)</h1>
+<section id="sec-datarepo" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> A centralised data repository (within SANBI IT systems)</h1>
 <p>Reproducible science requires us to apply exactly the same methods to exactly the same datasets. Sharing scripted workflows goes a long way to make the methods reproducible, but the other critical aspect is ensuring that the input data are identical. If we all have our own copy of input datasets on our machines, how do we ensure that they always remain the same, including when the data manager/owner adds new data or makes corrections? Below is a suggested approach that we are starting to implement. If anyone foresees problems with it, or if you have other solutions, please share!</p>
 <p>Within the <em>SANBI Marine Programme</em> Team (Microsoft Teams), we have a ‘marine_data’ channel, where we are curating all of our spatial layers and datasets. Because it includes datasets that may not be shared with others and/or have usage restrictions, it is a private (protected) channel and membership is restricted to those who need it. Although not critical to this demonstration, the data are grouped in thematic subfolders and a data inventory (spreadsheet) in the root folder captures the metadata and the location (folder path) of the datasets. This Teams channel is intended to be our centralised and authoritative data storage. The advantage of using a Teams channel over a staff member’s OneDrive account, is that the channel should be safe and persist irrespective of staff turnover. If datasets are updated or fixed, they should be updated here and tracked in the data inventory.</p>
 <p>Up until a few days ago, we had to manually download these data and/or remember to re-download the relevant folder if data were added/changed. However, Natasha recently figured out a system by which we can sync the Teams channel to our computers. This is achieved by adding a shortcut to the Teams channel to our OneDrive account, and the OneDrive account is synced to our computers.</p>
@@ -319,8 +353,8 @@ git clone https://github.com/username/repo.git</p>
 </div>
 </div>
 </section>
-<section id="general-notes-on-good-data-hygiene-see-borer-et-al.-2009" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> General notes on good data hygiene (See Borer et al.&nbsp;2009)</h1>
+<section id="general-notes-on-good-data-hygiene-see-borer-et-al.-2009" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> General notes on good data hygiene (See Borer et al.&nbsp;2009)</h1>
 <p>Use descriptive, standardised names for your files and folder names. Avoid spaces - use underscores instead.</p>
 <p>Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.</p>
 <p>Have your data in long table format (add data in rows, not columns).</p>
@@ -328,8 +362,8 @@ git clone https://github.com/username/repo.git</p>
 <p>Always maintain effective metadata: clear, unambiguous, comprehensive</p>
 <p>Use a scripted program for analysis. Store data in non-proprietary software formats. Consider hardware formats &amp; longevity (save data from those floppy disks!). Always store an uncorrected, original data file.</p>
 </section>
-<section id="references" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> References</h1>
+<section id="references" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> References</h1>
 <p>Borer ET, Seabloom EW, Jones MB, Schildhauer M (2009) Some Simple Guidelines for Effective Data Management. The Bulletin of the Ecological Society of America 90:205–214. doi: 10.1890/0012-9623-90.2.205</p>
 </section>
 
