@@ -27,13 +27,13 @@ There are different ways of structuring your projects to keep them organised. In
 -   ***project*** (root) folder
     -   The "home" of your stand-alone project. It should typically contain everything the project needs and all the resultant outputs, organised in meaningful folders. It also contains your *README.md*, *.Rproj* and *.gitignore* files (which are created automatically).\
 -   ***data*** folder
-    -   all your input data (often included via a **link**); these files generally do not get altered or over-written by your project scripts.\
+    -   All your input data (often included via a **link**); these files generally do not get altered or over-written by your project scripts.\
 -   ***scripts*** folder
-    -   all your scripts that contribute to your workflow (the 'recipes' of your work)\
+    -   All your scripts that contribute to your workflow (the 'recipes' of your work)\
 -   ***outputs*** folder
-    -   any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like, although we generally don't bother.\
+    -   Any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like, although we generally don't bother.\
 -   ***plots*** folder
-    -   any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)
+    -   Any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)
 
 Therefore, anything written (saved) by the scripts is written to "outputs/..." or to "plots/...", not into the root directory as that might get crowded and chaotic otherwise. We also want to (generally) avoid writing any changes to the input files, so we tend to not write to the *data* directory. See our [project_template](https://gitlab.com/jockongl/r_project_template) if interested.
 
@@ -91,9 +91,13 @@ However, the very useful [*git diff*](https://www.datacamp.com/tutorial/git-diff
 
 The (hidden) .git folder appears inside your project folder once you have initialised Git on that project and it contains the (magic) history that tracks your committed changes over time.
 
-Before you start using Git for the first time, you need to set your credentials within a terminal:\
+Before you start using Git for the first time, you need to set your credentials either within a terminal:\
 > git config \--global user.name \[YOUR NAME\]\
 > git config \--global user.email \[YOUR EMAIL\]
+
+or in R using:\
+library(usethis)
+use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
 
 See some [GitHub information](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address) on the commit email address and your options, which you may want to read if you're worried about exposing your email address online.
 
