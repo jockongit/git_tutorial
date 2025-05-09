@@ -1,4 +1,4 @@
-# Starting out with Git and some useful data science tricks
+# Starting out with Git and some useful data tricks
 
 ## Purpose
 
