@@ -162,7 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li><strong><em>plots</em></strong> folder
 <ul>
-<li>Any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)</li>
+<li>Any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s).</li>
 </ul></li>
 </ul>
 <p>Therefore, anything written (saved) by the scripts is written to “outputs/…” or to “plots/…”, not into the root directory as that might get crowded and chaotic otherwise. We also want to (generally) avoid writing any changes to the input files, so we tend to not write to the <em>data</em> directory. See our <a href="https://gitlab.com/jockongl/r_project_template">project_template</a> if interested.</p>
@@ -178,8 +178,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">### example</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## load the spatial features and dplyr packages (install them if you have not yet done so)</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"sf"</span>)) <span class="fu">install.packages</span>(<span class="st">"sf"</span>); <span class="fu">library</span>(sf)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"dplyr"</span>)) <span class="fu">install.packages</span>(<span class="st">"dplyr"</span>); <span class="fu">library</span>(dplyr)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## create file paths (find the correct path, which can vary among different machines)</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mem_fl <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"../data"</span>, <span class="at">pattern =</span> <span class="st">"^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="co"># we include '../' to go up one directory level to the root folder, because I created a 'quarto' folder and unlike other (normal .R) scripts, quarto files get rendered from the folder they are saved in. But, running it in the R console, we need to remove the '../' as the default working directory is the project root directory. this difference between the 'working directory' of quarto files and the R console or R scripts, can be avoided by using the here() function:</span></span>
@@ -216,8 +216,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Before you start using Git for the first time, you need to set your credentials either within a terminal:<br>
 &gt; git config --global user.name [YOUR NAME]<br>
 &gt; git config --global user.email [YOUR EMAIL]</p>
-<p>or in R using:<br>
-library(usethis) use_git_config(user.name = “Jane Doe”, user.email = “jane@example.org”)</p>
+<p>Alternatively, in R, you can use the <em>usethis</em> package as follows:</p>
+<blockquote class="blockquote">
+<p>library(usethis) use_git_config(user.name = “Jane Doe”, user.email = “jane@example.org”)</p>
+</blockquote>
 <p>See some <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address">GitHub information</a> on the commit email address and your options, which you may want to read if you’re worried about exposing your email address online.</p>
 </section>
 <section id="what-is-gitlabgithub" class="level2" data-number="2.2">
@@ -263,7 +265,17 @@ library(usethis) use_git_config(user.name = “Jane Doe”, user.email = “jane
 <p>git clone https://github.com/username/repo.git</p>
 </blockquote>
 <p>This approach of cloning online repositories is how most of us novice Git users start a new project: We create a new empty project on GitHub/GitLab, clone it to our computers, and then start updating the <em>README.md</em> and create the project folders, files and update the .gitignore file(s). Once the basic parts are in place, we can do our first cycle of staging the changes, committing them to a version and pushing them to the remote repository.</p>
-<p>Alternatively, you can <a href="https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub">push an existing project to GitHub/GitLab</a>, but I’ve struggled trying to achieve this in the past. A way to circumvent it is to do the above clone and then copy and paste your project contents into the newly cloned (but mostly empty) project folder.</p>
+<p>You can <a href="https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub">push an existing project to GitHub/GitLab</a>, however I’ve struggled to achieve this in the past. A way to circumvent it is to do the above clone and then copy and paste your project contents into the newly cloned (but mostly empty) project folder.</p>
+<p>A second alternative, to push an existing project on your computer to GitHub, is to type <mark><em>usethis::use_github()</em></mark> in your R console (having installed the <em>usethis</em> package). Before doing so, you need to ensure that your R project has Git initialised. This should create a new GitHub repo named the same as your project and push your files to it. Remember to set up your .gitignore appropriately before pushing your project.</p>
+</section>
+<section id="pulling-updates" class="level3">
+<h3 class="anchored" data-anchor-id="pulling-updates">Pulling updates</h3>
+<p>To pull the latest version from the online repository (referred to as ‘remote’), use the <em>Pull</em> button on the Git pane in RStudio.</p>
+<p>This is equivalent to typing the following in a terminal:</p>
+<blockquote class="blockquote">
+<p>git pull</p>
+</blockquote>
+<p>If you are collaborating with others on a project, it becomes vital to pull changes <strong>before</strong> you start making changes, so that you’re working with the latest additions from your team mates!</p>
 </section>
 <section id="staging-changes" class="level3">
 <h3 class="anchored" data-anchor-id="staging-changes">Staging changes</h3>
@@ -271,7 +283,7 @@ library(usethis) use_git_config(user.name = “Jane Doe”, user.email = “jane
 <p>In RStudio, you stage the files by ticking their boxes in the <em>Staged</em> column of the Git pane.</p>
 <p>In the terminal, you stage all modified files with:</p>
 <blockquote class="blockquote">
-<p>git add .</p>
+<p>git add -A</p>
 </blockquote>
 <p>or if you want to add specific files, name them:</p>
 <blockquote class="blockquote">
@@ -286,16 +298,11 @@ library(usethis) use_git_config(user.name = “Jane Doe”, user.email = “jane
 <blockquote class="blockquote">
 <p>git commit -m “Your commit message describing what has changed.”</p>
 </blockquote>
-<p>Try to write meaningful commit messages, both to help your collaborators understand the changes and in case you need to identify a specific commit in a few days, months (or years) time.</p>
-</section>
-<section id="pulling-updates" class="level3">
-<h3 class="anchored" data-anchor-id="pulling-updates">Pulling updates</h3>
-<p>To pull the latest version from the online repository (referred to as ‘remote’), use the <em>Pull</em> button on the Git pane in RStudio.</p>
-<p>This is equivalent to typing the following in a terminal:</p>
+<p>or, if you would like to stage and commit your files in one step, you can use:</p>
 <blockquote class="blockquote">
-<p>git pull</p>
+<p>git commit -am “Your commit message describing what has changed.”</p>
 </blockquote>
-<p>If you are collaborating with others on a project, it becomes vital to pull changes <strong>before</strong> you start making changes, so that you’re working with the latest additions from your team mates!</p>
+<p>Try to write meaningful commit messages, both to help your collaborators understand the changes and in case you need to identify a specific commit in a few days, months (or years) time.</p>
 </section>
 <section id="pushing-changes" class="level3">
 <h3 class="anchored" data-anchor-id="pushing-changes">Pushing changes</h3>
@@ -304,7 +311,14 @@ library(usethis) use_git_config(user.name = “Jane Doe”, user.email = “jane
 <blockquote class="blockquote">
 <p>git push</p>
 </blockquote>
-<p>If one of your teammates has pushed their changes to the online repository since your previous pull, you may get a failed push warning, talking about a merge conflict. In most instances, this can be easily resolved with a ‘Pull with Rebase’ (see the drop-down arrow next to the <em>Pull</em> button in RStudio or type <mark>git pull --rebase</mark> into a terminal).</p>
+<p>If one of your teammates has pushed their changes to the online repository since your previous pull, you may get a ‘rejected’ error message, stating “Updates were rejected because the remote contains work that you do not have locally”.</p>
+<p>In most instances, this can be easily resolved with a ‘Pull with Rebase’ (see the drop-down arrow next to the <em>Pull</em> button in RStudio or type <mark>git pull --rebase</mark> into a terminal).</p>
+<p>However be very mindful that merge conflicts mean that the same lines of a file where changed to two different things by two different people (could even be you and your past self! If you forgot to pull changes you made on a different computer before you started working). The best way to deal with this is to then use git pull, which will give you merge conflicts and tell you which files have conflicting changes (or if you don’t have any conflicting changes it will just update your files with the latest online work and you can re-stage commit and push your work) look at which files have conflicts and look at them. The sections that have two ‘versions’ will have —HEAD followed by your most recent version, and then a second section of the previous/other version. You have to chose which version you want to keep, delete the HEAD and other git additions, restage and commit you accepted version and then you can push without trouble and you have fixed your merge conflicts.</p>
+<p>An example of this workflow is:</p>
+<p>$ git push To https://gitlab.com/nba_2025/git_tutorial.git ! [rejected] main -&gt; main (fetch first) error: failed to push some refs to ‘https://gitlab.com/nba_2025/git_tutorial.git’ hint: Updates were rejected because the remote contains work that you do not hint: have locally. This is usually caused by another repository pushing to hint: the same ref. If you want to integrate the remote changes, use hint: ‘git pull’ before pushing again. hint: See the ‘Note about fast-forwards’ in ‘git push –help’ for details.</p>
+<p>N.Besseling@CPTLTP0048 MINGW64 ~/Documents/repos/git_tutorial (main) $ git pull remote: Enumerating objects: 36, done. remote: Counting objects: 100% (36/36), done. remote: Compressing objects: 100% (22/22), done. remote: Total 22 (delta 16), reused 0 (delta 0), pack-reused 0 (from 0) Unpacking objects: 100% (22/22), 2.68 KiB | 49.00 KiB/s, done. From https://gitlab.com/nba_2025/git_tutorial 5e29823..638bf52 main -&gt; origin/main Auto-merging quarto/collaborating_with_git.qmd CONFLICT (content): Merge conflict in quarto/collaborating_with_git.qmd Automatic merge failed; fix conflicts and then commit the result.</p>
+<p>N.Besseling@CPTLTP0048 MINGW64 ~/Documents/repos/git_tutorial (main|MERGING) $ git commit -am “fixed merge conflicts” [main add7213] fixed merge conflicts</p>
+<p>N.Besseling@CPTLTP0048 MINGW64 ~/Documents/repos/git_tutorial (main) $ git push Enumerating objects: 14, done. Counting objects: 100% (14/14), done. Delta compression using up to 22 threads Compressing objects: 100% (8/8), done. Writing objects: 100% (8/8), 936 bytes | 936.00 KiB/s, done. Total 8 (delta 6), reused 0 (delta 0), pack-reused 0 (from 0) To https://gitlab.com/nba_2025/git_tutorial.git 638bf52..add7213 main -&gt; main</p>
 </section>
 <section id="git-diff" class="level3">
 <h3 class="anchored" data-anchor-id="git-diff">git diff</h3>
@@ -394,7 +408,7 @@ library(usethis) use_git_config(user.name = “Jane Doe”, user.email = “jane
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## load the spatial features and dplyr packages (install them if you have not yet done so)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(NBA.package)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"nbaR"</span>)) devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"SANBI-NBA/nbaR"</span>); <span class="fu">library</span>(nbaR)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## create file paths (find the correct path, which can vary among different machines)</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>mem_fl <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>), <span class="at">pattern =</span> <span class="st">"^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
@@ -420,7 +434,7 @@ library(usethis) use_git_config(user.name = “Jane Doe”, user.email = “jane
 </section>
 <section id="general-notes-on-good-data-hygiene-see-borer-et-al.-2009" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> General notes on good data hygiene (See Borer et al.&nbsp;2009)</h1>
-<p>Use descriptive, standardised names for your files and folder names. Avoid spaces, use underscores instead.</p>
+<p>Use descriptive, standardised names for your files and folder names. Avoid spaces, use underscores or dashes instead.</p>
 <p>Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.</p>
 <p>Have your data in long table format (add data in rows, not columns).</p>
 <p>Each column should contain only one type (class) of information (either text, numeric, etc.).</p>

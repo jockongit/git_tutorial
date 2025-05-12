@@ -57,8 +57,8 @@ By creating the above linked folders, together with the use of the R function *l
 ### example
 
 ## load the spatial features and dplyr packages (install them if you have not yet done so)
-library(sf)
-library(dplyr)
+if (!require("sf")) install.packages("sf"); library(sf)
+if (!require("dplyr")) install.packages("dplyr"); library(dplyr)
 
 ## create file paths (find the correct path, which can vary among different machines)
 mem_fl <- list.files(path = "../data", pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE) # we include '../' to go up one directory level to the root folder, because I created a 'quarto' folder and unlike other (normal .R) scripts, quarto files get rendered from the folder they are saved in. But, running it in the R console, we need to remove the '../' as the default working directory is the project root directory. this difference between the 'working directory' of quarto files and the R console or R scripts, can be avoided by using the here() function:
@@ -95,10 +95,10 @@ Before you start using Git for the first time, you need to set your credentials 
 > git config \--global user.name \[YOUR NAME\]\
 > git config \--global user.email \[YOUR EMAIL\]
 
-or in R using:\
-library(usethis)
+Alternatively, in R, you can use the *usethis* package as follows:
 
-use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
+> library(usethis)
+> use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
 
 See some [GitHub information](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address) on the commit email address and your options, which you may want to read if you're worried about exposing your email address online.
 
@@ -167,10 +167,13 @@ This approach of cloning online repositories is how most of us novice Git users 
 We create a new empty project on GitHub/GitLab, clone it to our computers, and then start updating the *README.md* and create the project folders, files and update the .gitignore file(s).
 Once the basic parts are in place, we can do our first cycle of staging the changes, committing them to a version and pushing them to the remote repository.
 
-## Alternatively, if you already have a project on your computer that you wish to connect to GitLab/GitHub then you need to make sure it is an R project and has git initialised. If you want to connect to HitHub it is very easy, just run **usethis::use_github()** in an r script in the project you want to connect. 
-
-If you want to connect to GitLab you can [push an existing project to GitHub/GitLab](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub).  but I've struggled trying to achieve this in the past. 
+You can [push an existing project to GitHub/GitLab](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub), however I've struggled to achieve this in the past. 
 A way to circumvent it is to do the above clone and then copy and paste your project contents into the newly cloned (but mostly empty) project folder.
+
+A second alternative, to push an existing project on your computer to GitHub, is to type [*usethis::use_github()*]{.mark} in your R console (having installed the *usethis* package). 
+Before doing so, you need to ensure that your R project has Git initialised.
+This should create a new GitHub repo named the same as your project and push your files to it.
+Remember to set up your .gitignore appropriately before pushing your project.
 
 ### Pulling updates
 
@@ -208,7 +211,7 @@ Alternatively, the terminal syntax is as follows:
 
 > git commit -m "Your commit message describing what has changed."
 
-or to stage and commit in one step you can use:
+or, if you would like to stage and commit your files in one step, you can use:
 
 > git commit -am "Your commit message describing what has changed."
 
@@ -222,7 +225,9 @@ Alternatively, the terminal command is:
 
 > git push
 
-If one of your teammates has pushed their changes to the online repository since your previous pull, you may get a failed push warning, talking about a merge conflict.
+If one of your teammates has pushed their changes to the online repository since your previous pull, you may get a 'rejected' error message, stating "Updates were rejected because the remote contains work that you do not have locally".
+
+
 In most instances, this can be easily resolved with a 'Pull with Rebase' (see the drop-down arrow next to the *Pull* button in RStudio or type [git pull \--rebase]{.mark} into a terminal).
 
 
@@ -395,7 +400,7 @@ Lets load some of the data and play with them:
 ## load the spatial features and dplyr packages (install them if you have not yet done so)
 library(sf)
 library(dplyr)
-library(nbaR)
+if (!require("nbaR")) devtools::install_github("SANBI-NBA/nbaR"); library(nbaR)
 
 ## create file paths (find the correct path, which can vary among different machines)
 mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
@@ -415,7 +420,7 @@ bar_plot
 
 # General notes on good data hygiene (See Borer et al. 2009)
 
-Use descriptive, standardised names for your files and folder names. Avoid spaces, use underscores instead.
+Use descriptive, standardised names for your files and folder names. Avoid spaces, use underscores or dashes instead.
 
 Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.
 
