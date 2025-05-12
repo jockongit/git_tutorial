@@ -33,7 +33,7 @@ There are different ways of structuring your projects to keep them organised. In
 -   ***outputs*** folder
     -   Any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like, although we generally don't bother.\
 -   ***plots*** folder
-    -   Any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)
+    -   Any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s).
 
 Therefore, anything written (saved) by the scripts is written to "outputs/..." or to "plots/...", not into the root directory as that might get crowded and chaotic otherwise. We also want to (generally) avoid writing any changes to the input files, so we tend to not write to the *data* directory. See our [project_template](https://gitlab.com/jockongl/r_project_template) if interested.
 
@@ -167,10 +167,20 @@ This approach of cloning online repositories is how most of us novice Git users 
 We create a new empty project on GitHub/GitLab, clone it to our computers, and then start updating the *README.md* and create the project folders, files and update the .gitignore file(s).
 Once the basic parts are in place, we can do our first cycle of staging the changes, committing them to a version and pushing them to the remote repository.
 
-Alternatively, if you already have a project on your computure that you wish to connect to GitLab/GitHub then you need to make sure it is an R project and has git initialised. If you want to connect to HitHub it is very easy, just run **usethis::use_github()** in an r script in the project you want to connect. 
+## Alternatively, if you already have a project on your computer that you wish to connect to GitLab/GitHub then you need to make sure it is an R project and has git initialised. If you want to connect to HitHub it is very easy, just run **usethis::use_github()** in an r script in the project you want to connect. 
 
 If you want to connect to GitLab you can [push an existing project to GitHub/GitLab](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub).  but I've struggled trying to achieve this in the past. 
 A way to circumvent it is to do the above clone and then copy and paste your project contents into the newly cloned (but mostly empty) project folder.
+
+### Pulling updates
+
+To pull the latest version from the online repository (referred to as 'remote'), use the *Pull* button on the Git pane in RStudio.
+
+This is equivalent to typing the following in a terminal:
+
+> git pull
+
+If you are collaborating with others on a project, it becomes vital to pull changes **before** you start making changes, so that you're working with the latest additions from your team mates!
 
 ### Staging changes
 
@@ -203,18 +213,6 @@ or to stage and commit in one step you can use:
 > git commit -am "Your commit message describing what has changed."
 
 Try to write meaningful commit messages, both to help your collaborators understand the changes and in case you need to identify a specific commit in a few days, months (or years) time.
-
-
-
-### Pulling updates
-
-To pull the latest version from the online repository (referred to as 'remote'), use the *Pull* button on the Git pane in RStudio.
-
-This is equivalent to typing the following in a terminal:
-
-> git pull
-
-If you are collaborating with others on a project, it becomes vital to pull changes **before** you start making changes, so that you're working with the latest additions from your team mates!
 
 ### Pushing changes
 
