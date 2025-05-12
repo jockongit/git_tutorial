@@ -226,7 +226,47 @@ If one of your teammates has pushed their changes to the online repository since
 In most instances, this can be easily resolved with a 'Pull with Rebase' (see the drop-down arrow next to the *Pull* button in RStudio or type [git pull \--rebase]{.mark} into a terminal).
 
 
-However be very mindful that merge conflicts mean that the same lines of a file where changed to two different things by two different people (could even be you and your past self! If you forgot to pull changes you made on a different computer before you started working). The best way to deal with this is to then use git pull, which will give you merge conflicts and tell you which files have conflicting changes (or if you don't have any conflicting changes it will just update your files with the latest online work and you can re-stage commit and push your work) look at which files have conflicts and look at them. The sections that have two 'versions' will have ---HEAD followed by your most recent version, and then a second section of the previous/other version. You have to chose which version you want to keep, delete the HEAD and other git additions, restage and commit you accepted version and then you can push without trouble and you have fixed your merge conflicts. 
+However be very mindful that merge conflicts mean that the same lines of a file where changed to two different things by two different people (could even be you and your past self! If you forgot to pull changes you made on a different computer before you started working). The best way to deal with this is to then use git pull, which will give you merge conflicts and tell you which files have conflicting changes (or if you don't have any conflicting changes it will just update your files with the latest online work and you can re-stage commit and push your work) look at which files have conflicts and look at them. The sections that have two 'versions' will have ---HEAD followed by your most recent version, and then a second section of the previous/other version. You have to chose which version you want to keep, delete the HEAD and other git additions, restage and commit you accepted version and then you can push without trouble and you have fixed your merge conflicts.
+
+An example of this workflow is:
+
+$ git push
+To https://gitlab.com/nba_2025/git_tutorial.git
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'https://gitlab.com/nba_2025/git_tutorial.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+N.Besseling@CPTLTP0048 MINGW64 ~/Documents/repos/git_tutorial (main)
+$ git pull
+remote: Enumerating objects: 36, done.
+remote: Counting objects: 100% (36/36), done.
+remote: Compressing objects: 100% (22/22), done.
+remote: Total 22 (delta 16), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (22/22), 2.68 KiB | 49.00 KiB/s, done.
+From https://gitlab.com/nba_2025/git_tutorial
+   5e29823..638bf52  main       -> origin/main
+Auto-merging quarto/collaborating_with_git.qmd
+CONFLICT (content): Merge conflict in quarto/collaborating_with_git.qmd
+Automatic merge failed; fix conflicts and then commit the result.
+
+N.Besseling@CPTLTP0048 MINGW64 ~/Documents/repos/git_tutorial (main|MERGING)
+$ git commit -am "fixed merge conflicts"
+[main add7213] fixed merge conflicts
+
+N.Besseling@CPTLTP0048 MINGW64 ~/Documents/repos/git_tutorial (main)
+$ git push
+Enumerating objects: 14, done.
+Counting objects: 100% (14/14), done.
+Delta compression using up to 22 threads
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (8/8), 936 bytes | 936.00 KiB/s, done.
+Total 8 (delta 6), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://gitlab.com/nba_2025/git_tutorial.git
+   638bf52..add7213  main -> main
 
 
 ### git diff
