@@ -225,7 +225,7 @@ Alternatively, the terminal command is:
 If one of your teammates has pushed their changes to the online repository since your previous pull, you may get a failed push warning, talking about a merge conflict.
 In most instances, this can be easily resolved with a 'Pull with Rebase' (see the drop-down arrow next to the *Pull* button in RStudio or type [git pull \--rebase]{.mark} into a terminal).
 
-However be very mindful that merge conflicts mean that the same lines of a file where changed to two different things by two different people (could even be you and your past self! If you forgot to pull changes you made on a different computure before you started working). The best way to deal with this is to look at which files have conflicts and look at them. The sections that have two 'versions' will have ---HEAD followed by your most recent version, and then a second section of the previous/other version. You have to chose which version you want to keep, delete the HEAD and other git additions, restage and commit you accepted version and then you can push without trouble and you have fixed your merge conflicts. 
+However be very mindful that merge conflicts mean that the same lines of a file where changed to two different things by two different people (could even be you and your past self! If you forgot to pull changes you made on a different computer before you started working). The best way to deal with this is to look at which files have conflicts and look at them. The sections that have two 'versions' will have ---HEAD followed by your most recent version, and then a second section of the previous/other version. You have to chose which version you want to keep, delete the HEAD and other git additions, restage and commit you accepted version and then you can push without trouble and you have fixed your merge conflicts. 
 
 ### git diff
 
@@ -349,7 +349,7 @@ Lets load some of the data and play with them:
 ## load the spatial features and dplyr packages (install them if you have not yet done so)
 library(sf)
 library(dplyr)
-library(NBA.package)
+library(nbaR)
 
 ## create file paths (find the correct path, which can vary among different machines)
 mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
