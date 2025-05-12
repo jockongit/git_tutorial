@@ -27,13 +27,13 @@ There are different ways of structuring your projects to keep them organised. In
 -   ***project*** (root) folder
     -   The "home" of your stand-alone project. It should typically contain everything the project needs and all the resultant outputs, organised in meaningful folders. It also contains your *README.md*, *.Rproj* and *.gitignore* files (which are created automatically).\
 -   ***data*** folder
-    -   all your input data (often included via a **link**); these files generally do not get altered or over-written by your project scripts.\
+    -   All your input data (often included via a **link**); these files generally do not get altered or over-written by your project scripts.\
 -   ***scripts*** folder
-    -   all your scripts that contribute to your workflow (the 'recipes' of your work)\
+    -   All your scripts that contribute to your workflow (the 'recipes' of your work)\
 -   ***outputs*** folder
-    -   any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like, although we generally don't bother.\
+    -   Any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like, although we generally don't bother.\
 -   ***plots*** folder
-    -   any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)
+    -   Any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)
 
 Therefore, anything written (saved) by the scripts is written to "outputs/..." or to "plots/...", not into the root directory as that might get crowded and chaotic otherwise. We also want to (generally) avoid writing any changes to the input files, so we tend to not write to the *data* directory. See our [project_template](https://gitlab.com/jockongl/r_project_template) if interested.
 
@@ -91,9 +91,14 @@ However, the very useful [*git diff*](https://www.datacamp.com/tutorial/git-diff
 
 The (hidden) .git folder appears inside your project folder once you have initialised Git on that project and it contains the (magic) history that tracks your committed changes over time.
 
-Before you start using Git for the first time, you need to set your credentials within a terminal:\
+Before you start using Git for the first time, you need to set your credentials either within a terminal:\
 > git config \--global user.name \[YOUR NAME\]\
 > git config \--global user.email \[YOUR EMAIL\]
+
+or in R using:\
+library(usethis)
+
+use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
 
 See some [GitHub information](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address) on the commit email address and your options, which you may want to read if you're worried about exposing your email address online.
 
@@ -162,7 +167,9 @@ This approach of cloning online repositories is how most of us novice Git users 
 We create a new empty project on GitHub/GitLab, clone it to our computers, and then start updating the *README.md* and create the project folders, files and update the .gitignore file(s).
 Once the basic parts are in place, we can do our first cycle of staging the changes, committing them to a version and pushing them to the remote repository.
 
-Alternatively, you can [push an existing project to GitHub/GitLab](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub), but I've struggled trying to achieve this in the past. 
+Alternatively, if you already have a project on your computure that you wish to connect to GitLab/GitHub then you need to make sure it is an R project and has git initialised. If you want to connect to HitHub it is very easy, just run **usethis::use_github()** in an r script in the project you want to connect. 
+
+If you want to connect to GitLab you can [push an existing project to GitHub/GitLab](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub).  but I've struggled trying to achieve this in the past. 
 A way to circumvent it is to do the above clone and then copy and paste your project contents into the newly cloned (but mostly empty) project folder.
 
 ### Staging changes
@@ -174,7 +181,7 @@ In RStudio, you stage the files by ticking their boxes in the *Staged* column of
 
 In the terminal, you stage all modified files with:  
 
-> git add .
+> git add -A
 
 or if you want to add specific files, name them:
 
@@ -190,6 +197,10 @@ To commit in RStudio, select the *Commit* button in the Git pane, with files sel
 Alternatively, the terminal syntax is as follows:
 
 > git commit -m "Your commit message describing what has changed."
+
+or to stage and commit in one step you can use:
+
+> git commit -am "Your commit message describing what has changed."
 
 Try to write meaningful commit messages, both to help your collaborators understand the changes and in case you need to identify a specific commit in a few days, months (or years) time.
 
@@ -215,6 +226,8 @@ Alternatively, the terminal command is:
 
 If one of your teammates has pushed their changes to the online repository since your previous pull, you may get a failed push warning, talking about a merge conflict.
 In most instances, this can be easily resolved with a 'Pull with Rebase' (see the drop-down arrow next to the *Pull* button in RStudio or type [git pull \--rebase]{.mark} into a terminal).
+
+However be very mindful that merge conflicts mean that the same lines of a file where changed to two different things by two different people (could even be you and your past self! If you forgot to pull changes you made on a different computer before you started working). The best way to deal with this is to look at which files have conflicts and look at them. The sections that have two 'versions' will have ---HEAD followed by your most recent version, and then a second section of the previous/other version. You have to chose which version you want to keep, delete the HEAD and other git additions, restage and commit you accepted version and then you can push without trouble and you have fixed your merge conflicts. 
 
 ### git diff
 
@@ -342,13 +355,13 @@ Lets load some of the data and play with them:
 ## load the spatial features and dplyr packages (install them if you have not yet done so)
 library(sf)
 library(dplyr)
-library(NBA.package)
+library(nbaR)
 
 ## create file paths (find the correct path, which can vary among different machines)
 mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
 threat_fl <- list.files(path = here::here("data"), pattern = "^nba_example_thr_data.csv$", recursive = TRUE, full.names = TRUE)
 
-bar_plot <- NBA_plot(NBA_example_thr_data,
+bar_plot <- nba_plot(NBA_example_thr_data,
                   `OVERALL types`,
                   2:5,
                  CHRT = "bar",

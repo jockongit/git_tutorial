@@ -147,22 +147,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li><strong><em>data</em></strong> folder
 <ul>
-<li>all your input data (often included via a <strong>link</strong>); these files generally do not get altered or over-written by your project scripts.<br>
+<li>All your input data (often included via a <strong>link</strong>); these files generally do not get altered or over-written by your project scripts.<br>
 </li>
 </ul></li>
 <li><strong><em>scripts</em></strong> folder
 <ul>
-<li>all your scripts that contribute to your workflow (the ‘recipes’ of your work)<br>
+<li>All your scripts that contribute to your workflow (the ‘recipes’ of your work)<br>
 </li>
 </ul></li>
 <li><strong><em>outputs</em></strong> folder
 <ul>
-<li>any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like, although we generally don’t bother.<br>
+<li>Any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like, although we generally don’t bother.<br>
 </li>
 </ul></li>
 <li><strong><em>plots</em></strong> folder
 <ul>
-<li>any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)</li>
+<li>Any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s)</li>
 </ul></li>
 </ul>
 <p>Therefore, anything written (saved) by the scripts is written to “outputs/…” or to “plots/…”, not into the root directory as that might get crowded and chaotic otherwise. We also want to (generally) avoid writing any changes to the input files, so we tend to not write to the <em>data</em> directory. See our <a href="https://gitlab.com/jockongl/r_project_template">project_template</a> if interested.</p>
@@ -213,9 +213,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A solution to <strong>track</strong> and <strong>document</strong> changes to files (inputs, outputs, results, document versions, etc). It allows you to take a snapshot of your files at a point in time, together with a commit message, so that you can roll back to that previous state (or recover individual files from that state) at any future time.</p>
 <p>Git will track changes in any file formats, including Word documents, spatial files, etc. However, the very useful <a href="https://www.datacamp.com/tutorial/git-diff-guide"><em>git diff</em></a> function, which highlights differences in the <strong>content</strong> between file versions, works only for selected (mostly text) file types, which includes most scripting file formats.</p>
 <p>The (hidden) .git folder appears inside your project folder once you have initialised Git on that project and it contains the (magic) history that tracks your committed changes over time.</p>
-<p>Before you start using Git for the first time, you need to set your credentials within a terminal:<br>
+<p>Before you start using Git for the first time, you need to set your credentials either within a terminal:<br>
 &gt; git config --global user.name [YOUR NAME]<br>
 &gt; git config --global user.email [YOUR EMAIL]</p>
+<p>or in R using:<br>
+library(usethis) use_git_config(user.name = “Jane Doe”, user.email = “jane@example.org”)</p>
 <p>See some <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address">GitHub information</a> on the commit email address and your options, which you may want to read if you’re worried about exposing your email address online.</p>
 </section>
 <section id="what-is-gitlabgithub" class="level2" data-number="2.2">
@@ -398,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>mem_fl <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>), <span class="at">pattern =</span> <span class="st">"^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>threat_fl <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>), <span class="at">pattern =</span> <span class="st">"^nba_example_thr_data.csv$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>bar_plot <span class="ot">&lt;-</span> <span class="fu">NBA_plot</span>(NBA_example_thr_data,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>bar_plot <span class="ot">&lt;-</span> <span class="fu">nba_plot</span>(NBA_example_thr_data,</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                  <span class="st">`</span><span class="at">OVERALL types</span><span class="st">`</span>,</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>,</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">CHRT =</span> <span class="st">"bar"</span>,</span>
