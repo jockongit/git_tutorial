@@ -22,42 +22,41 @@ execute:
 
 Your greatest collaborator ever is likely to be your future self. Do yourself (and all other collaborators) a great service by keeping an organised and well documented project that they can navigate and understand with relative ease. The biggest impediment to collaboration is finding (and understanding) the pertinent information.
 
-There are different ways of structuring your projects to keep them organised. In our team we try to keep a fairly standardised structure as below (recognising that some projects will require unique structures):
+There are different ways of structuring your project directories to keep them organised. In our team we try to keep a fairly standardised structure as below (recognising that some projects will have unique requirements):
 
 -   ***project*** (root) folder
-    -   The "home" of your stand-alone project. It should typically contain everything the project needs and all the resultant outputs, organised in meaningful folders. It also contains your *README.md*, *.Rproj* and *.gitignore* files (which are created automatically).\
+    -   The "home" of your stand-alone project. It should typically contain everything the project needs and all the resultant outputs, organised in meaningful subfolders. It also contains your *README.md*, *.Rproj* and *.gitignore* files (which are created automatically).\
 -   ***data*** folder
-    -   All your input data (often included via a **link**); these files generally do not get altered or over-written by your project scripts.\
+    -   All your input data (often included via a **link**); these files generally do not get altered or over-written by your project scripts. You can modify your input data with your scripts, but do not overwrite the original input file (save an intermediate output file if necessary).\
 -   ***scripts*** folder
-    -   All your scripts that contribute to your workflow (the 'recipes' of your work)\
+    -   All your scripts that contribute to your workflow (the documented 'recipes' of your work)\
 -   ***outputs*** folder
-    -   Any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like, although we generally don't bother.\
+    -   Any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like.\
 -   ***plots*** folder
-    -   Any outputs that consist of image files (plots/figures) that you may want to include in reports or simply visualise your results or maps with after running the script(s).
+    -   Any outputs that consist of image files (plots/figures) that you may want to include in reports or help visualise your results.
 
-Therefore, anything written (saved) by the scripts is written to "outputs/..." or to "plots/...", not into the root directory as that might get crowded and chaotic otherwise. We also want to (generally) avoid writing any changes to the input files, so we tend to not write to the *data* directory. See our [project_template](https://gitlab.com/jockongl/r_project_template) if interested.
+Therefore, anything written (saved) by the scripts is written to "outputs/..." or to "plots/...". We generally avoid writing to the *data* directory as we want to strictly avoid changing input files. We also tend to avoid writing into the root directory as that might get crowded and chaotic if we generate a lot of files. See our [project_template](https://gitlab.com/jockongl/r_project_template) if interested.
 
 ## How do we avoid many duplicated input files across different projects? {#sec-avoidDupl}
 
-One solution is the use of symbolic links (or directory junctions), which you create inside your project *data* directory and which point to a folder that is stored elsewhere on your computer and contains the input data relevant to the project.
+One solution is the use of symbolic links (or directory junctions), which you create inside your project *data* directory and which point to a target folder that is stored elsewhere on your computer and contains the input data.
 
 In the Windows Command Prompt (cmd), use the [mklink](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/mklink) function in the following way:
 
 mklink /d “absolute_path\\to\\your\\Rproject\\data\\link2gis” “absolute_path\\to\\your\\data\\gis”
 
-to create a linked folder (first set of inverted commas) that points to your target folder (second set of inverted commas). 
+to create a linked folder (first set of inverted commas) that points to your target folder (second set of inverted commas). Hint: copy the absolute paths from your Windows Explorer.
 
-Hint: copy the absolute paths from your Windows Explorer.
-
-If you require admin rights to do that and do not have them, then use */j* instead of */d*, which ironically is potentially more dangerous (at least in our context). 
+If you require admin rights to do so and lack them, then use */j* instead of */d*, which ironically, seems potentially more risky (at least in our context). 
 See some [background about links](https://en.wikipedia.org/wiki/Symbolic_link#NTFS_symbolic_link) and a very brief [link testing project](https://gitlab.com/nba_2025/symbolic_links_testing) for further info.
 
-**Warning:** do not copy linked folders from one location to another (e.g. to replicate them from one R project to others), they seem to paste as the target contents and not as linked folders.
+**Warning:** In Windows, do not copy linked folders from one location to another (e.g. to replicate them from one R project to another), as they seem to paste the target contents and not a linked folder. 
+*Please shout if anyone knows how to get around this problem.
 
+If you repeat the above approach of linked folders across all your R projects, they can all point to a single directory that houses your input data somewhere else on your computer.
 
-If you repeat this approach across all your R projects, they can all point to a single directory that houses your input data somewhere else on your computer.
-
-**NB Warning:** Make sure that you add the symbolic link, e.g. *data/link2gis* in the above example (or your entire *data/* folder) to the *.gitignore* file! Otherwise, Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.
+**NB Warning:** Always ensure that you add the symbolic link, e.g. *data/link2gis* in the above example, or your entire *data/* folder, to the *.gitignore* file! 
+Otherwise, Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.
 
 By creating the above linked folders, together with the use of the R function *list.files()* to search for and load your input files, we can have complete interoperability between different machines (or collaborators), even if they have their data stored in different places (under different folder names).
 
@@ -73,7 +72,7 @@ mem_fl <- list.files(path = "../data", pattern = "^Marine_Ecosystem_Map_2023_fin
 # mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
 
 ## load the spatial file 
-mem <- read_sf(dsn=mem_fl)
+mem <- read_sf(dsn = mem_fl)
 
 ## plot the pelagic ecosystem types
 # plot(st_geometry(mem), axes=T)
@@ -92,14 +91,13 @@ Once we have our data and file structures organised, we need to try and write or
 
 ## What is Git?
 
-A solution to **track** and **document** changes to files (inputs, outputs, results, document versions, etc). It allows you to take a snapshot of your files at a point in time, together with a commit message, so that you can roll back to that previous state (or recover individual files from that state) at any future time.
+A solution to **track** and **document** changes to files (inputs, outputs, results, document versions, etc). It allows you to take a snapshot of your project contents at a point in time and save it with a meaningful commit message, so that you can roll back to that previous state (or recover individual files from that state) at any future time.
 
 Git will track changes in any file formats, including Word documents, spatial files, etc. 
-However, the very useful [*git diff*](https://www.datacamp.com/tutorial/git-diff-guide) function, which highlights differences in the **content** between file versions, works only for selected (mostly text) file types, which includes most scripting file formats.
-
-The (hidden) .git folder appears inside your project folder once you have initialised Git on that project and it contains the (magic) history that tracks your committed changes over time.
+However, the very useful [*git diff*](https://www.datacamp.com/tutorial/git-diff-guide) function, which highlights differences in the **content** between file versions, works only for selected (mostly text) file types.
 
 Before you start using Git for the first time, you need to set your credentials either within a terminal:\
+
 > git config \--global user.name \[YOUR NAME\]\
 > git config \--global user.email \[YOUR EMAIL\]
 
@@ -108,13 +106,24 @@ Alternatively, in R, you can use the *usethis* package as follows:
 > library(usethis)
 > use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
 
-See some [GitHub information](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address) on the commit email address and your options, which you may want to read if you're worried about exposing your email address online.
+See some [GitHub information](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address) on the commit email address, which you may want to read if you're worried about exposing your email address online.
+
+### Initialise Git
+
+Once your Git profile is created, you can initialise (activate) Git on any project (folder).
+This action is needed only once for each project and if you clone a remote repository, you bypass this step as the cloned repository is already initialised.
+
+In RStudio, it can be achieved via *Tools* \> *Project Options* \> *Git/SVN*; select *Git* under *Version control system*.
+
+Alternatively, simply type [*git init*]{.mark} in a terminal, ensuring you're in the project root folder.
+
+The .git folder appears inside your project folder once you have initialised Git on that project and it contains the (magic) history that tracks your committed versions over time.
 
 ## What is GitLab/GitHub?
 
 An online platform that allows you to share your project with the public, or selected collaborators, and your collaborators are able to make changes that you can then 'accept' (merge) into your project. The updated versions or changes to the project are 'pushed' (from computer to online repository) and 'pulled' (from online repository to computer) with Git commands.
 
-If you would like to version control your work on your own computer (and nothing further), then you need only Git (software) installed. If you would like to create an online repository (copy of your project) so that others can see it, or to be able to share your work with collaborators, then you will additionally need to create a profile on GitLab or GitHub (or equivalent) and 'push' your project to an online repository.
+If you would like to version control your work on your own computer (and nothing further), then you need only the Git software installed. If you would like to create an online repository (copy of your project), to interact with collaborators on the work or simply make  your work publicly accessible, then you will additionally need to create a profile on GitLab or GitHub (or equivalent) and 'push' your project to an online repository.
 
 We will only scratch the surface of the most common Git operations.
 An excellent resource for finding your feet with Git and using it with R is Jenny Bryan's [Happy Git and GitHub for the useR](https://happygitwithr.com/).
@@ -152,15 +161,6 @@ A general recommendation is to use cheat sheets when you're learning a new tool,
 
 RStudio has integrated Git functionality and a Git interface on RStudio becomes visible once you have initialised Git version control on that project (close and reopen RStudio if it doesn't appear). The Git interface on RStudio provides buttons for the most common Git operations, which can alternatively be executed in a terminal. Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal (and many advanced users revert to using the terminal only).
 
-### Initialise Git
-
-Once your Git profile is created, you can initialise (activate) Git on any project (folder).
-This action is needed only once for each project and if you clone a remote repository, you bypass this step.
-
-In RStudio, this can be achieved via *Tools* \> *Project Options* \> *Git/SVN*; select *Git* under *Version control system*.
-
-Alternatively, simply type [*git init*]{.mark} in a terminal, ensuring you're in the project root folder.
-
 ### Cloning remote repositories
 
 Very often the first thing you might want to do, is to clone an online repository from platforms such as GitHub or GitLab.
@@ -193,6 +193,14 @@ This is equivalent to typing the following in a terminal:
 
 If you are collaborating with others on a project, it becomes vital to pull changes **before** you start making changes, so that you're working with the latest additions from your team mates!
 
+### Git status
+
+The Git pane in RStudio provides an easy overview of what the status is of your project, showing up files that have changed but are not yet committed.
+It also indicates whether they have changed, have been deleted, are newly created, etc.
+Similar (and more detailed information) can be viewed in a terminal with the command:
+
+> git status
+
 ### Staging changes
 
 Selecting the changed files that you want to commit, is referred to as *staging* them.
@@ -221,7 +229,7 @@ Alternatively, the terminal syntax is as follows:
 
 or, if you would like to stage and commit your files in one step, you can use:
 
-> git commit -am "Your commit message describing what has changed."
+> git commit -a -m "Your commit message describing what has changed."
 
 Try to write meaningful commit messages, both to help your collaborators understand the changes and in case you need to identify a specific commit in a few days, months (or years) time.
 
@@ -294,7 +302,16 @@ to scroll through all the changes for each file, or to examine a specific file, 
 
 > git diff filename.ext
 
-### The most common tasks
+### Git log
+
+Want to see the history of Git commits (and branches) on your project? In RStudio, you can click on the *History* button in the Git pane (note: not the *History* pane of your project), which shows you the sequence of previous commits and provides a visual representation of branches.
+
+That information is taken from the Git log, which can be accessed on the terminal with:
+
+> git log
+
+
+### The most common Git tasks
 
 Although there are many more Git commands and most of them can be elaborated on with several options or additional arguments, by far the most common sequence of tasks for us tend to be:
 
@@ -354,6 +371,9 @@ Once you start collaborating on projects, it becomes especially important to pul
 Before you start working on a new feature, pull the remote project, in case your teammates have made some changes since you last worked on it. 
 Otherwise, you'll be adding your changes to an outdated version!
 
+**Warning:** Always double-check which branch you're working on before making your changes. 
+If you forget to, there are ways of [moving your changes to another branch](https://stackoverflow.com/questions/1394797/move-existing-uncommitted-work-to-a-new-branch-in-git).
+
 [Creating issues (on GitLab/GitHub) and then closing those issues with a commit](https://raps-with-r.dev/github.html), is a really nice way of documenting updates.
 Issues are used to document problems in the project code, or wishlist features to add in future. 
 When those problems or wishlist items are addressed, the commit message can simply reference the issue number (e.g. ["fixed #28]{.mark}), which will automatically close that issue number. 
@@ -361,7 +381,7 @@ When those problems or wishlist items are addressed, the commit message can simp
 # A centralised data repository (with SANBI IT systems) {#sec-datarepo}
 
 Reproducible science requires us to apply exactly the same methods to exactly the same datasets. 
-Sharing scripted workflows goes a long way to make the methods reproducible, but another critical aspect is ensuring that the input data are identical. 
+Sharing scripted workflows goes a long way to make methods reproducible, but another critical aspect is ensuring that the input data are identical. 
 If we all have our own copy of input datasets on our machines, how do we ensure that they always remain the same, including when the data manager/owner updates them with new data or corrections? 
 Below is a suggested approach that we are starting to implement. 
 If anyone foresees problems with it, or if you have other solutions, please share!
@@ -391,7 +411,7 @@ Any updates or changes made to that dataset on Teams will sync through to everyo
 Lets try the same exercise as above in @sec-avoidDupl, but this time create a symbolic link from your project data drive to the nba_data folder we just added to OneDrive.
 For me, this was typing the following into Windows Command Prompt:
 
-mklink /j "C:\\Users\\J.Currie\\Documents\\Rprojects\\git_tutorial\\data\\link2nba_data" "C:\\Users\\J.Currie\\OneDrive\\OneDrive - sanbi.org.za\\shortcut_to_nba_data"
+mklink /d "C:\\Users\\J.Currie\\Documents\\Rprojects\\git_tutorial\\data\\link2nba_data" "C:\\Users\\J.Currie\\OneDrive\\OneDrive - sanbi.org.za\\shortcut_to_nba_data"
 
 So, now we can all access the same nba_data datasets with our R projects. 
 
