@@ -43,10 +43,18 @@ One solution is the use of symbolic links (or directory junctions), which you cr
 
 In the Windows Command Prompt (cmd), use the [mklink](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/mklink) function in the following way:
 
-mklink /j “absolute_path\\to\\your\\Rproject\\data\\link2gis” “absolute_path\\to\\your\\data\\gis”
+mklink /d “absolute_path\\to\\your\\Rproject\\data\\link2gis” “absolute_path\\to\\your\\data\\gis”
 
-to create a linked folder (first set of inverted commas) that points to your target folder (second set of inveted commas). 
+to create a linked folder (first set of inverted commas) that points to your target folder (second set of inverted commas). 
+
 Hint: copy the absolute paths from your Windows Explorer.
+
+If you require admin rights to do that and do not have them, then use */j* instead of */d*, which ironically is potentially more dangerous (at least in our context). 
+See some [background about links](https://en.wikipedia.org/wiki/Symbolic_link#NTFS_symbolic_link) and a very brief [link testing project](https://gitlab.com/nba_2025/symbolic_links_testing) for further info.
+
+**Warning:** do not copy linked folders from one location to another (e.g. to replicate them from one R project to others), they seem to paste as the target contents and not as linked folders.
+
+
 If you repeat this approach across all your R projects, they can all point to a single directory that houses your input data somewhere else on your computer.
 
 **NB Warning:** Make sure that you add the symbolic link, e.g. *data/link2gis* in the above example (or your entire *data/* folder) to the *.gitignore* file! Otherwise, Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.
