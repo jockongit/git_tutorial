@@ -18,76 +18,10 @@ execute:
   error: false
 ---
 
-# Getting organised
-
-Your greatest collaborator ever is likely to be your future self. Do yourself (and all other collaborators) a great service by keeping an organised and well documented project that they can navigate and understand with relative ease. The biggest impediment to collaboration is finding (and understanding) the pertinent information.
-
-There are different ways of structuring your project directories to keep them organised. In our team we try to keep a fairly standardised structure as below (recognising that some projects will have unique requirements):
-
--   ***project*** (root) folder
-    -   The "home" of your stand-alone project. It should typically contain everything the project needs and all the resultant outputs, organised in meaningful subfolders. It also contains your *README.md*, *.Rproj* and *.gitignore* files (which are created automatically).\
--   ***data*** folder
-    -   All your input data (often included via a **link**); these files generally do not get altered or over-written by your project scripts. You can modify your input data with your scripts, but do not overwrite the original input file (save an intermediate output file if necessary).\
--   ***scripts*** folder
-    -   All your scripts that contribute to your workflow (the documented 'recipes' of your work)\
--   ***outputs*** folder
-    -   Any and all results saved by the scripts (besides the images that we prefer to put in plots); these could be further divided into types of outputs if you would like.\
--   ***plots*** folder
-    -   Any outputs that consist of image files (plots/figures) that you may want to include in reports or help visualise your results.
-
-Therefore, anything written (saved) by the scripts is written to "outputs/..." or to "plots/...". We generally avoid writing to the *data* directory as we want to strictly avoid changing input files. We also tend to avoid writing into the root directory as that might get crowded and chaotic if we generate a lot of files. See our [project_template](https://gitlab.com/jockongl/r_project_template) if interested.
-
-## How do we avoid many duplicated input files across different projects? {#sec-avoidDupl}
-
-One solution is the use of symbolic links (or directory junctions), which you create inside your project *data* directory and which point to a target folder that is stored elsewhere on your computer and contains the input data.
-
-In the Windows Command Prompt (cmd), use the [mklink](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/mklink) function in the following way:
-
-mklink /d “absolute_path\\to\\your\\Rproject\\data\\link2gis” “absolute_path\\to\\your\\data\\gis”
-
-to create a linked folder (first set of inverted commas) that points to your target folder (second set of inverted commas). Hint: copy the absolute paths from your Windows Explorer.
-
-If you require admin rights to do so and lack them, then use */j* instead of */d*, which ironically, seems potentially more risky (at least in our context). 
-See some [background about links](https://en.wikipedia.org/wiki/Symbolic_link#NTFS_symbolic_link) and a very brief [link testing project](https://gitlab.com/nba_2025/symbolic_links_testing) for further info.
-
-**Warning:** In Windows, do not copy linked folders from one location to another (e.g. to replicate them from one R project to another), as they seem to paste the target contents and not a linked folder. 
-*Please shout if anyone knows how to get around this problem.
-
-If you repeat the above approach of linked folders across all your R projects, they can all point to a single directory that houses your input data somewhere else on your computer.
-
-**NB Warning:** Always ensure that you add the symbolic link, e.g. *data/link2gis* in the above example, or your entire *data/* folder, to the *.gitignore* file! 
-Otherwise, Git will try to stage and commit your entire linked data directory, which might not be intended and may often be huge.
-
-By creating the above linked folders, together with the use of the R function *list.files()* to search for and load your input files, we can have complete interoperability between different machines (or collaborators), even if they have their data stored in different places (under different folder names).
-
-```{r load_data, echo=TRUE}
-### example
-
-## load the spatial features and dplyr packages (install them if you have not yet done so)
-if (!require("sf")) install.packages("sf"); library(sf)
-if (!require("dplyr")) install.packages("dplyr"); library(dplyr)
-
-## create file paths (find the correct path, which can vary among different machines)
-mem_fl <- list.files(path = "../data", pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE) # we include '../' to go up one directory level to the root folder, because I created a 'quarto' folder and unlike other (normal .R) scripts, quarto files get rendered from the folder they are saved in. But, running it in the R console, we need to remove the '../' as the default working directory is the project root directory. this difference between the 'working directory' of quarto files and the R console or R scripts, can be avoided by using the here() function:
-# mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
-
-## load the spatial file 
-mem <- read_sf(dsn = mem_fl)
-
-## plot the pelagic ecosystem types
-# plot(st_geometry(mem), axes=T)
-mem %>% 
-  st_transform(crs = 4326) %>% 
-  select(P_EcosysType) %>% 
-  plot(axes = T, key.pos = NULL, main = "Pelagic Ecosystem Types")
-
-```
-
-The file will be found as long as it exists somewhere within the path specified. To demonstrate, rename the 'pretend_link2gis' folder name and rerun it. Obviously, for consistent results and reproducibility, the collaborators need to ensure they have precisely the same input data! See @sec-datarepo for a trick to accomplish that.
-
 # Version control
 
-Once we have our data and file structures organised, we need to try and write organised and well-documented code. To track updates to the code, snapshot specific versions (e.g. of results shared with a collaborator or used in an output), and remain organised among multiple collaborators working on the same project, we need a version control system.
+Once we have our data and file structures organised in a clear, consistent and logical way, we need to try and write well-structured, well-documented and easy-to-follow code for effective collaboration. 
+An important aspect of effective collaboration is version control, which enables us to explicitly track updates to the project, snapshot specific versions (e.g. of results shared in an output), and remain organised among multiple collaborators working on the same project.
 
 ## What is Git?
 
@@ -126,7 +60,7 @@ An online platform that allows you to share your project with the public, or sel
 If you would like to version control your work on your own computer (and nothing further), then you need only the Git software installed. If you would like to create an online repository (copy of your project), to interact with collaborators on the work or simply make  your work publicly accessible, then you will additionally need to create a profile on GitLab or GitHub (or equivalent) and 'push' your project to an online repository.
 
 We will only scratch the surface of the most common Git operations.
-An excellent resource for finding your feet with Git and using it with R is Jenny Bryan's [Happy Git and GitHub for the useR](https://happygitwithr.com/).
+An excellent resource for finding your feet with Git and using it with R is Jenny Bryan's [Happy Git and GitHub for the useR](https://happygitwithr.com/) and [here](https://valohai.com/blog/git-for-data-science/) is another valuable introduction.
 
 ## Connecting to GitHub/GitLab
 
@@ -157,7 +91,7 @@ However, if you have enabled Two-Factor Authentication, then you must use a PAT 
 
 ## Common Git functions
 
-A general recommendation is to use cheat sheets when you're learning a new tool, e.g. [Git cheat sheet](https://education.github.com/git-cheat-sheet-education.pdf).
+A general recommendation is to use cheat sheets when you're learning a new tool, e.g. [Git cheat sheet](https://about.gitlab.com/images/press/git-cheat-sheet.pdf).
 
 RStudio has integrated Git functionality and a Git interface on RStudio becomes visible once you have initialised Git version control on that project (close and reopen RStudio if it doesn't appear). The Git interface on RStudio provides buttons for the most common Git operations, which can alternatively be executed in a terminal. Sometimes you need to execute a command that is not covered by the buttons, so it is a good idea to become familiar with using the terminal (and many advanced users revert to using the terminal only).
 
@@ -243,57 +177,66 @@ Alternatively, the terminal command is:
 
 If one of your teammates has pushed their changes to the online repository since your previous pull, you may get a 'rejected' error message, stating "Updates were rejected because the remote contains work that you do not have locally".
 
-
 In most instances, this can be easily resolved with a 'Pull with Rebase' (see the drop-down arrow next to the *Pull* button in RStudio or type [git pull \--rebase]{.mark} into a terminal).
 
+If your teammates pushed changes to the same region or chunk of a file that you changed, you will encounter a **merge conflict**.
+If informed of a merge conflict, open the conflicting file(s), find the conflicting text sections and decide which versions of the text to keep. 
+Then restage and commit your resolved file(s) and they should push without problem.
+Here is some example output from such a situation and the workflow to resolve it:
 
-However be very mindful that merge conflicts mean that the same lines of a file where changed to two different things by two different people (could even be you and your past self! If you forgot to pull changes you made on a different computer before you started working). The best way to deal with this is to then use git pull, which will give you merge conflicts and tell you which files have conflicting changes (or if you don't have any conflicting changes it will just update your files with the latest online work and you can re-stage commit and push your work) look at which files have conflicts and look at them. The sections that have two 'versions' will have ---HEAD followed by your most recent version, and then a second section of the previous/other version. You have to chose which version you want to keep, delete the HEAD and other git additions, restage and commit you accepted version and then you can push without trouble and you have fixed your merge conflicts.
+Natasha pushes new changes to the online repository and receives the 'failed to push' message because someone else has pushed an update since she last pulled:
 
-An example of this workflow is:
+> git push\
+> To https://gitlab.com/nba_2025/git_tutorial.git\
+>  ! [rejected]        main -> main (fetch first)\
+> error: failed to push some refs to 'https://gitlab.com/nba_2025/git_tutorial.git'\
+> hint: Updates were rejected because the remote contains work that you do not\
+> hint: have locally. This is usually caused by another repository pushing to\
+> hint: the same ref. If you want to integrate the remote changes, use\
+> hint: 'git pull' before pushing again.\
+> hint: See the 'Note about fast-forwards' in 'git push --help' for details.\
 
-$ git push
-To https://gitlab.com/nba_2025/git_tutorial.git
- ! [rejected]        main -> main (fetch first)
-error: failed to push some refs to 'https://gitlab.com/nba_2025/git_tutorial.git'
-hint: Updates were rejected because the remote contains work that you do not
-hint: have locally. This is usually caused by another repository pushing to
-hint: the same ref. If you want to integrate the remote changes, use
-hint: 'git pull' before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+Therefore, she pulls and Git does an auto-merge of the two diverging versions, but warns her that she needs to sort out a merge conflict:
 
-N.Besseling@CPTLTP0048 MINGW64 ~/Documents/repos/git_tutorial (main)
-$ git pull
-remote: Enumerating objects: 36, done.
-remote: Counting objects: 100% (36/36), done.
-remote: Compressing objects: 100% (22/22), done.
-remote: Total 22 (delta 16), reused 0 (delta 0), pack-reused 0 (from 0)
-Unpacking objects: 100% (22/22), 2.68 KiB | 49.00 KiB/s, done.
-From https://gitlab.com/nba_2025/git_tutorial
-   5e29823..638bf52  main       -> origin/main
-Auto-merging quarto/collaborating_with_git.qmd
-CONFLICT (content): Merge conflict in quarto/collaborating_with_git.qmd
-Automatic merge failed; fix conflicts and then commit the result.
+> git pull\
+> remote: Enumerating objects: 36, done.\
+> remote: Counting objects: 100% (36/36), done.\
+> remote: Compressing objects: 100% (22/22), done.\
+> remote: Total 22 (delta 16), reused 0 (delta 0), pack-reused 0 (from 0)\
+> Unpacking objects: 100% (22/22), 2.68 KiB | 49.00 KiB/s, done.\
+> From https://gitlab.com/nba_2025/git_tutorial\
+>    5e29823..638bf52  main       -> origin/main\
+> Auto-merging quarto/collaborating_with_git.qmd\
+> CONFLICT (content): Merge conflict in quarto/collaborating_with_git.qmd\
+> Automatic merge failed; fix conflicts and then commit the result.\
 
-N.Besseling@CPTLTP0048 MINGW64 ~/Documents/repos/git_tutorial (main|MERGING)
-$ git commit -am "fixed merge conflicts"
-[main add7213] fixed merge conflicts
+The merge conflict results in both versions of the differing text, highlighted in this manner:
 
-N.Besseling@CPTLTP0048 MINGW64 ~/Documents/repos/git_tutorial (main)
-$ git push
-Enumerating objects: 14, done.
-Counting objects: 100% (14/14), done.
-Delta compression using up to 22 threads
-Compressing objects: 100% (8/8), done.
-Writing objects: 100% (8/8), 936 bytes | 936.00 KiB/s, done.
-Total 8 (delta 6), reused 0 (delta 0), pack-reused 0 (from 0)
-To https://gitlab.com/nba_2025/git_tutorial.git
-   638bf52..add7213  main -> main
+> <<<<<<< HEAD: collaborating_with_git.qmd\
+> This version of the conflicting text contains changes from the most recent local changes.\
+> =======\
+> This version of the conflicting text contains changes pulled from your teammate.\
+> >>>>>>> 77976da35a11db4580b80ae27e8d65caf5208086:collaborating_with_git.qmd
 
+Natasha manually sorts out the merge conflicts and deletes the parts she doesn't want to keep (including the special code outlining the conflict), she then saves the file, stages it, commits and pushes her resolved file:
+
+> git commit -a -m "fixed merge conflict"\
+> [main add7213] fixed merge conflicts\
+
+> git push\
+> Enumerating objects: 14, done.\
+> Counting objects: 100% (14/14), done.\
+> Delta compression using up to 22 threads\
+> Compressing objects: 100% (8/8), done.\
+> Writing objects: 100% (8/8), 936 bytes | 936.00 KiB/s, done.\
+> Total 8 (delta 6), reused 0 (delta 0), pack-reused 0 (from 0)\
+> To https://gitlab.com/nba_2025/git_tutorial.git\
+>    638bf52..add7213  main -> main\
 
 ### git diff
 
 Highlighting the differences between two versions of the same file can be very useful when trouble-shooting a merge conflict or trying to remind yourself of what changes you've made (if any).
-The *Diff* button on RStudio's Git pane does that for you and by default shows up any changed files that have not yet been committed.
+The *Diff* button on RStudio's Git pane does that for you and by default only changed files that have not yet been committed are visible to select.
 Similar can be achieved from the command line with 
 
 > git diff
@@ -304,26 +247,25 @@ to scroll through all the changes for each file, or to examine a specific file, 
 
 ### Git log
 
-Want to see the history of Git commits (and branches) on your project? In RStudio, you can click on the *History* button in the Git pane (note: not the *History* pane of your project), which shows you the sequence of previous commits and provides a visual representation of branches.
+Want to see the history of Git commits (and branches) on your project? In RStudio, you can click on the *History* button in the Git pane (not the *History* pane of your project!), which shows you the sequence of previous commits and provides a visual representation of branches.
 
 That information is taken from the Git log, which can be accessed on the terminal with:
 
 > git log
 
-
 ### The most common Git tasks
 
-Although there are many more Git commands and most of them can be elaborated on with several options or additional arguments, by far the most common sequence of tasks for us tend to be:
+Although there are many more Git commands (and most have several options via additional arguments), by far the most common sequence of tasks tends to be:
 
  * **git pull** to ensure we have the newest version; 
  * **git add .** to stage changed files, followed by 
  * **git commit -m "descriptive commit message"** to commit the changes; 
  * **git push** to push them to the remote repository;
- * **git pull \--rebase** if the push threw a merge conflict, followed by another **git push**
+ * **git pull \--rebase** if the push was rejected due to the remote containing updated work, followed by another **git push** (in some cases requiring resolution of a merge conflict first);
 
 If you are facing problems getting Git and GitHub/GitLab to work with RStudio, try to read [Happy Git and GitHub for the useR](https://happygitwithr.com/troubleshooting) or other online resources.
 
-Remember to never create a Git repository inside another Git repository.
+Lastly, remember to never create a Git repository inside another Git repository.
 
 ## The importance of *.gitignore*
 
@@ -341,12 +283,6 @@ This is useful for many different contexts, e.g.:
 Any login credentials (e.g. username and password to access your databases) or other sensitive information that you want accessible to your R session, but which you do not want to share with collaborators (or the public if your project is public), you should add to a special file named *.Renviron*. This text file is treated in a special way, in that objects defined in it are automatically loaded into your R environment when you open your project in RStudio. If you want the same credentials accessible across all your R projects, you can save such information in an *.Renviron* file in your *HOME* directory. If you want different credentials accessible to different projects, you can instead create a project-specific *.Renviron* file in your project root directory. Remember, if you make changes in your .Renviron file, you need to restart R to load those changes.
 
 **Very important:** Make a habit of adding '.Renviron' to your *.gitignore* file, so that the sensitive information you have put there is not pushed to your online repository!
-
-## Things to watch out for
-
-Always review and be certain about what is included or not included in *.gitignore*. We need to be careful to not share (push) sensitive data or credentials - e.g. it would be a horrible mistake to push your collaborator's highly sensitive data to a public Git repository!
-
-Large file size limits and overall repository size limits need to be taken into consideration. For example, if you create (or include) a file \> 100 MB in your project, you'll be able to commit it on Git on your local machine, but when you try to push that commit to GitLab, it will be rejected (and can get complicated quickly).
 
 # The importance of branches
 
@@ -378,91 +314,16 @@ If you forget to, there are ways of [moving your changes to another branch](http
 Issues are used to document problems in the project code, or wishlist features to add in future. 
 When those problems or wishlist items are addressed, the commit message can simply reference the issue number (e.g. ["fixed #28]{.mark}), which will automatically close that issue number. 
 
-# A centralised data repository (with SANBI IT systems) {#sec-datarepo}
+# Things to watch out for
 
-Reproducible science requires us to apply exactly the same methods to exactly the same datasets. 
-Sharing scripted workflows goes a long way to make methods reproducible, but another critical aspect is ensuring that the input data are identical. 
-If we all have our own copy of input datasets on our machines, how do we ensure that they always remain the same, including when the data manager/owner updates them with new data or corrections? 
-Below is a suggested approach that we are starting to implement. 
-If anyone foresees problems with it, or if you have other solutions, please share!
+Always review and be certain about what is included or not included in *.gitignore*. We need to be careful to not share (push) sensitive data or credentials - e.g. it would be a horrible mistake to push your collaborator's highly sensitive data to a public Git repository!
 
-Within the *SANBI Marine Programme* Team (Microsoft Teams), we have a 'marine_data' channel, where we curate all of our spatial layers and datasets. 
-Because it includes datasets that have sharing and usage restrictions, it is a private (protected) channel and membership is restricted to those who need it. 
-Although not critical to this demonstration, the data are grouped in thematic subfolders and a data inventory (spreadsheet) in the root folder captures the metadata and the location (folder path) of the datasets. 
-This Teams channel is our 'centralised and authoritative data' storage. 
-The advantage of using a Teams channel rather than a staff member's OneDrive account, is that the channel should be safe and persist irrespective of staff turnover. 
-If datasets are updated, they need to be updated here and tracked in the data inventory.
+Large file size limits and overall repository size limits need to be taken into consideration. For example, if you create (or include) a file \> 100 MB in your project, you'll be able to commit it on Git on your local machine, but when you try to push that commit to GitLab, it will be rejected (and can get complicated quickly).
 
-Up until a few days ago, we manually downloaded a copy of the data to our computers. 
-We had to remember to re-download the relevant folder or dataset if changes were made to them. 
-However, Natasha recently noticed that we can add a shortcut to the Teams channel in our OneDrive account, and the OneDrive account is synced to our computers.
-
-Lets try this:
-
-1.  Navigate to your MS Teams and to the nba_data channel within the NBA_data team.
-
-2.  Click on 'Add shortcut to OneDrive' in the options near the top (center) of the screen.
-
-3.  If it is not already, set up your computer to [sync your OneDrive account](https://support.microsoft.com/en-us/office/sync-files-with-onedrive-in-windows-615391c4-2bd3-4aae-a42a-858262e42a49) (or certain parts of it), including the newly added *nba_data* folder.
-
-If you manage that, you have a synced version of the Teams data folder on your computers and multiple people can access the same dataset. 
-Any updates or changes made to that dataset on Teams will sync through to everyone's OneDrive and their computer (when they next access that file).
-
-Lets try the same exercise as above in @sec-avoidDupl, but this time create a symbolic link from your project data drive to the nba_data folder we just added to OneDrive.
-For me, this was typing the following into Windows Command Prompt:
-
-mklink /d "C:\\Users\\J.Currie\\Documents\\Rprojects\\git_tutorial\\data\\link2nba_data" "C:\\Users\\J.Currie\\OneDrive\\OneDrive - sanbi.org.za\\shortcut_to_nba_data"
-
-So, now we can all access the same nba_data datasets with our R projects. 
-
-**But, beware:** 
-
-1.  Never write to your data (input) folder! This rule becomes absolutely critical if we are all sharing access to a central authoritative data repository. These data are not your personal copy! Do not make changes to them unless you are the authority/owner/data manager or have explicit permission or instruction to do so. (Having read-only access would be ideal if we can configure that)
-
-2.  Unless it is appropriate to share your input data with the online repository (and the data folder does not exceed your online repo size limits), you may likely want to add the linked folder ('link2nba_data' in the above example) to your .gitignore file. I already did this for this tutorial, because I wanted you to add those data as a linked folder via your OneDrive account and not receive them when you cloned the online repo.
-
-Lets load some of the data and play with them:
-
-```{r load_nba_data, echo=TRUE}
-
-## load the spatial features and dplyr packages (install them if you have not yet done so)
-library(sf)
-library(dplyr)
-if (!require("nbaR")) devtools::install_github("SANBI-NBA/nbaR"); library(nbaR)
-
-## create file paths (find the correct path, which can vary among different machines)
-mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
-threat_fl <- list.files(path = here::here("data"), pattern = "^nba_example_thr_data.csv$", recursive = TRUE, full.names = TRUE)
-
-bar_plot <- nba_plot(NBA_example_thr_data,
-                  `OVERALL types`,
-                  2:5,
-                 CHRT = "bar",
-                 NUM = TRUE,
-                 LAB = "Percentage of ecosystem types",
-                SAVE = NULL)
-
-bar_plot
-
-```
-
-# General notes on good data hygiene (See Borer et al. 2009)
-
-Use descriptive, standardised names for your files and folder names. Avoid spaces, use underscores or dashes instead.
-
-Use plain ASCII text for your file names, variable names, and data values. Avoid spaces, brackets or other special characters that will cause you pain in programming tasks.
-
-Have your data in long table format (add data in rows, not columns).
-
-Each column should contain only one type (class) of information (either text, numeric, etc.).
-
-Always maintain effective metadata: clear, unambiguous, comprehensive.
-
-Use a scripted program for analysis. 
-
-Store data in non-proprietary software formats and consider hardware formats & longevity (save data from those floppy disks!). 
-
-Always store an uncorrected, original data file.
+Some spatial files and Git pose a unique problem: When we open (look at) a geopackage file with QGIS (is it the same for Arc?), the file is immediately updated in terms of its 'date modified' and Git considers it changed!
+This can cause a lot of unnecessary 'changed files' (the file contents isn't actually changed) that get flagged for commits.
+More dangerous, it could conceivably cause someone's real changes to that file to be over-written by a collaborator's copy who subsequently opened their file to view, but made no content changes.
+There appear to be work-arounds for it, but it requires consideration if your teammates are accessing the project files with QGIS.
 
 # References
 
