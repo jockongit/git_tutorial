@@ -101,7 +101,6 @@ Very often the first thing you might want to do, is to clone an online repositor
 To do so, navigate to the online repository website and copy the relevant URL from the *Code* drop-down.
 In RStudio, create the new cloned project via *File > New Project > Version Control > Git* and pasting the URL into the relevant space, checking that you're happy with the project directory name and location, before confirming *Create Project*.
 
-Alternatively, create a project folder, navigate to it with the terminal, and clone the project with the following code, but replacing the URL with the one copied from the repository: 
 
 > git clone https://github.com/jockongit/git_tutorial.git
 
