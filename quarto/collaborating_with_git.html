@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -31,10 +31,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="collaborating_with_git_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="collaborating_with_git_files/libs/quarto-html/anchor.min.js"></script>
 <link href="collaborating_with_git_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="collaborating_with_git_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="collaborating_with_git_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="collaborating_with_git_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="collaborating_with_git_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="collaborating_with_git_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="collaborating_with_git_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -155,7 +155,7 @@ git config --global user.email [YOUR EMAIL]</p>
 <p>Very often the first thing you might want to do, is to clone an online repository from platforms such as GitHub or GitLab. To do so, navigate to the online repository website and copy the relevant URL from the <em>Code</em> drop-down. In RStudio, create the new cloned project via <em>File &gt; New Project &gt; Version Control &gt; Git</em> and pasting the URL into the relevant space, checking that you’re happy with the project directory name and location, before confirming <em>Create Project</em>.</p>
 <p>Alternatively, create a project folder, navigate to it with the terminal, and clone the project with the following code, but replacing the URL with the one copied from the repository:</p>
 <blockquote class="blockquote">
-<p>git clone https://github.com/username/repo.git</p>
+<p>git clone https://github.com/jockongit/git_tutorial.git</p>
 </blockquote>
 <p>This approach of cloning online repositories is how most of us novice Git users start a new project: We create a new empty project on GitHub/GitLab, clone it to our computers, and then start updating the <em>README.md</em> and create the project folders, files and update the .gitignore file(s). Once the basic parts are in place, we can do our first cycle of staging the changes, committing them to a version and pushing them to the remote repository.</p>
 <p>You can <a href="https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-push-an-existing-project-to-GitHub">push an existing project to GitHub/GitLab</a>, however I’ve struggled to achieve this in the past. A way to circumvent it is to do the above clone and then copy and paste your project contents into the newly cloned (but mostly empty) project folder.</p>
@@ -432,8 +432,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -544,7 +542,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

@@ -103,7 +103,7 @@ In RStudio, create the new cloned project via *File > New Project > Version Cont
 
 Alternatively, create a project folder, navigate to it with the terminal, and clone the project with the following code, but replacing the URL with the one copied from the repository: 
 
-> git clone https://github.com/username/repo.git
+> git clone https://github.com/jockongit/git_tutorial.git
 
 This approach of cloning online repositories is how most of us novice Git users start a new project:
 We create a new empty project on GitHub/GitLab, clone it to our computers, and then start updating the *README.md* and create the project folders, files and update the .gitignore file(s).

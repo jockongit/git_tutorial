@@ -98,7 +98,7 @@ if (!require("sf")) install.packages("sf"); library(sf)
 if (!require("dplyr")) install.packages("dplyr"); library(dplyr)
 
 ## find and assign the file path to an object
-mem_fl <- list.files(path = "../data", pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE) 
+mem_fl <- list.files(path = "../data", pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
 # Note: we include '../' to go up one directory level to the root folder, because I created a 'quarto' folder and unlike other (normal .R) scripts, quarto files get rendered from the folder they are saved in (in other words, their default 'working directory' is where they are saved). If we run it in the R console, we need to remove the '../' as the default working directory is the project root directory. this difference between the 'working directory' of quarto files and the R console or R scripts, can be avoided with a more robust approach, using the here() function:
 # mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
 
@@ -150,7 +150,7 @@ Any updates or changes made to that dataset on Teams will sync through to everyo
 Lets try the same exercise as above in @sec-avoidDupl, but this time create a symbolic link from your project data drive to the nba_data folder we just added to OneDrive.
 For me, this was typing the following into Windows Command Prompt:
 
-mklink /d "C:\\Users\\J.Currie\\Documents\\Rprojects\\git_tutorial\\data\\link2nba_data" "C:\\Users\\J.Currie\\OneDrive\\OneDrive - sanbi.org.za\\shortcut_to_nba_data"
+> mklink /d "C:\\Users\\J.Currie\\Documents\\Rprojects\\git_tutorial\\data\\link2nba_data" > "C:\\Users\\J.Currie\\OneDrive\\OneDrive - sanbi.org.za\\shortcut_to_nba_data"
 
 So, now we can all access the same nba_data datasets with our R projects. 
 
@@ -172,6 +172,10 @@ if (!require("nbaR")) devtools::install_github("SANBI-NBA/nbaR"); library(nbaR)
 ## create file paths (find the correct path, which can vary among different machines)
 mem_fl <- list.files(path = here::here("data"), pattern = "^Marine_Ecosystem_Map_2023_final_pelagic_only.gpkg$", recursive = TRUE, full.names = TRUE)
 threat_fl <- list.files(path = here::here("data"), pattern = "^nba_example_thr_data.csv$", recursive = TRUE, full.names = TRUE)
+
+## load the spatial file 
+# mem <- read_sf(dsn = mem_fl)
+## add loading of files
 
 bar_plot <- nba_plot(NBA_example_thr_data,
                   `OVERALL types`,

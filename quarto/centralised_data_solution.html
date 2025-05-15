@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -65,10 +65,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="centralised_data_solution_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="centralised_data_solution_files/libs/quarto-html/anchor.min.js"></script>
 <link href="centralised_data_solution_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="centralised_data_solution_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="centralised_data_solution_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="centralised_data_solution_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="centralised_data_solution_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="centralised_data_solution_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="centralised_data_solution_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -231,7 +231,9 @@ This is achieved with the use of the R function <em>list.files()</em> to search 
 </ol>
 <p>If you manage that, you have a synced version of the Teams data folder on your computers and multiple people can access the same dataset. Any updates or changes made to that dataset on Teams will sync through to everyone’s OneDrive and their computer (when they next access that file).</p>
 <p>Lets try the same exercise as above in <a href="#sec-avoidDupl" class="quarto-xref">Section&nbsp;1.3</a>, but this time create a symbolic link from your project data drive to the nba_data folder we just added to OneDrive. For me, this was typing the following into Windows Command Prompt:</p>
-<p>mklink /d “C:\Users\J.Currie\Documents\Rprojects\git_tutorial\data\link2nba_data” “C:\Users\J.Currie\OneDrive\OneDrive - sanbi.org.za\shortcut_to_nba_data”</p>
+<blockquote class="blockquote">
+<p>mklink /d “C:\Users\J.Currie\Documents\Rprojects\git_tutorial\data\link2nba_data” &gt; “C:\Users\J.Currie\OneDrive\OneDrive - sanbi.org.za\shortcut_to_nba_data”</p>
+</blockquote>
 <p>So, now we can all access the same nba_data datasets with our R projects.</p>
 <p><strong>But, beware:</strong></p>
 <ol type="1">
@@ -357,8 +359,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -469,7 +469,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
