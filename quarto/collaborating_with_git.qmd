@@ -47,6 +47,8 @@ See some [GitHub information](https://docs.github.com/en/account-and-profile/set
 Once your Git profile is created, you can initialise (activate) Git on any project (folder).
 This action is needed only once for each project and if you clone a remote repository, you bypass this step as the cloned repository is already initialised.
 
+**Warning:** House your R projects in a folder outside of folders tracked by OneDrive or DropBox or similar cloud storage solutions [to avoid problems](https://dustinbriles.com/onedrive-and-git-dont-do-it/). The use of GitHub/GitLab replaces the need to have these folders synced to cloud storage. 
+
 In RStudio, it can be achieved via *Tools* \> *Project Options* \> *Git/SVN*; select *Git* under *Version control system*.
 
 Alternatively, simply type [*git init*]{.mark} in a terminal, ensuring you're in the project root folder.

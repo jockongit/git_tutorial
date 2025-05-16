@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jock Currie, Natasha Besseling">
-<meta name="dcterms.date" content="2025-05-15">
+<meta name="dcterms.date" content="2025-05-16">
 
 <title>Collaborating with Git</title>
 <style>
@@ -31,10 +31,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="collaborating_with_git_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="collaborating_with_git_files/libs/quarto-html/anchor.min.js"></script>
 <link href="collaborating_with_git_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="collaborating_with_git_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="collaborating_with_git_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="collaborating_with_git_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="collaborating_with_git_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="collaborating_with_git_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="collaborating_with_git_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15 May 2025</p>
+      <p class="date">16 May 2025</p>
     </div>
   </div>
   
@@ -116,6 +116,7 @@ git config --global user.email [YOUR EMAIL]</p>
 <section id="initialise-git" class="level3">
 <h3 class="anchored" data-anchor-id="initialise-git">Initialise Git</h3>
 <p>Once your Git profile is created, you can initialise (activate) Git on any project (folder). This action is needed only once for each project and if you clone a remote repository, you bypass this step as the cloned repository is already initialised.</p>
+<p><strong>Warning:</strong> House your R projects in a folder outside of folders tracked by OneDrive or DropBox or similar cloud storage solutions <a href="https://dustinbriles.com/onedrive-and-git-dont-do-it/">to avoid problems</a>. The use of GitHub/GitLab replaces the need to have these folders synced to cloud storage.</p>
 <p>In RStudio, it can be achieved via <em>Tools</em> &gt; <em>Project Options</em> &gt; <em>Git/SVN</em>; select <em>Git</em> under <em>Version control system</em>.</p>
 <p>Alternatively, simply type <mark><em>git init</em></mark> in a terminal, ensuring you’re in the project root folder.</p>
 <p>The .git folder appears inside your project folder once you have initialised Git on that project and it contains the (magic) history that tracks your committed versions over time.</p>
@@ -432,6 +433,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -542,6 +545,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
+      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
